@@ -1,0 +1,14 @@
+import { Country } from "../../middleware/models/paisModel";
+import { Request, Response } from 'express';
+export const getAllCountryCodes = async (_req: Request, res: Response) => {
+    try {
+      const countries = await Country.findAll({
+        attributes: ['countryCode', 'name'], // Seleccionamos solo countryCode y name
+      });
+      res.json(countries);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Error al obtener los códigos de país.' }); 
+    }
+  };
+  

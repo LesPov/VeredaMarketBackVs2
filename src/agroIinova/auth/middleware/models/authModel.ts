@@ -78,9 +78,9 @@ export const AuthModel = sequelize.define<AuthInterface>('auth', {
      * Valor por defecto: `false`.
      */
     status: {
-        type: DataTypes.BOOLEAN,
+        type: DataTypes.ENUM('pendiente', 'aprobado', 'rechazado'),
         allowNull: false,
-        defaultValue: false,
+        defaultValue: 'pendiente',
     },
 }, {
     tableName: 'auth',

@@ -49,14 +49,14 @@ export const PersonalDataModel = sequelize.define<PersonalDataInterface>('person
   },
   gender: {
     type: DataTypes.ENUM('Mujer', 'Hombre', 'Otro género', 'Prefiero no declarar'),
-    allowNull: false,
+    allowNull: false, 
   },
 
-  photo: {
+  photo: {  
     type: DataTypes.STRING,
-    allowNull: true,
+    allowNull: true, 
   },
-}, {
+}, { 
   tableName: 'personalData',
   timestamps: true,
 });

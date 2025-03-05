@@ -15,7 +15,7 @@ import phoneVerificationRouter from '../agroIinova/auth/phone/routers/phoneRoute
 import loginUserRouter from '../agroIinova/auth/login/routes/loginRouter';
 import adminRouter from '../agroIinova/admin/routes/adminRoute';
 import clienteRouter from '../agroIinova/clientes/routes/clientRouter';
-import campesinoRouter from '../agroIinova/campesinos/routes/campesinosRouter';
+import campesinoRouter from '../agroIinova/campesinos/routes/registerCampesinosRouter';
 import { Country } from '../agroIinova/auth/middleware/models/paisModel';
 import countryPais from '../agroIinova/auth/pais/routes/paisRouter';
 import CampiAmigosServer from '../agroIinova/campesinos/middleware/service/capiamigoServer';

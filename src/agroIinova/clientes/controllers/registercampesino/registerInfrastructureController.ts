@@ -1,7 +1,7 @@
 import { Response } from 'express';
-import InfrastructureModel from '../../middleware/models/infrastructure.model';
-import { CustomRequest } from '../../../auth/middleware/valdiateToken/validateToken';
+ import { CustomRequest } from '../../../auth/middleware/valdiateToken/validateToken';
 import { errorMessages } from '../../../auth/middleware/errors/errorMessages';
+import InfrastructureModel from '../../middlewares/models/infrastructure.model';
 
 /**
  * Asegura que el usuario esté autenticado y retorna su userId.

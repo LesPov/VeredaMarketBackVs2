@@ -1,10 +1,10 @@
 import { Response } from 'express';
 import { errorMessages } from '../../../auth/middleware/errors/errorMessages';
-import { errorMessagesCp } from '../../middleware/errors/errorsMessagesCp';
-import { successMessagesCp } from '../../middleware/succes/succesMessagesCp';
-import FamilyCompositionModel from '../../middleware/models/familyComposition.model';
-import FamilyMemberModel from '../../middleware/models/familyMember.model';
+
 import { CustomRequest } from '../../../auth/middleware/valdiateToken/validateToken';
+import FamilyMemberModel from '../../middlewares/models/familyMember.model';
+import FamilyCompositionModel from '../../middlewares/models/familyComposition.model';
+import { successMessagesCp } from '../../middlewares/succes/succesMessagesCp';
 
 /**
  * Verifica si el usuario está autenticado y retorna el userId.

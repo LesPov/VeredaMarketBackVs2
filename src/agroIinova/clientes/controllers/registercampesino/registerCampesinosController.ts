@@ -1,9 +1,10 @@
 import { Response } from 'express';
 import { errorMessages } from '../../../auth/middleware/errors/errorMessages';
-import { errorMessagesCp } from '../../middleware/errors/errorsMessagesCp';
-import { successMessagesCp } from '../../middleware/succes/succesMessagesCp';
-import { PersonalDataModel } from '../../middleware/models/personalData.model';
+
 import { CustomRequest } from '../../../auth/middleware/valdiateToken/validateToken';
+import { errorMessagesCp } from '../../middlewares/errors/errorsMessagesCp';
+import { PersonalDataModel } from '../../middlewares/models/personalData.model';
+import { successMessagesCp } from '../../middlewares/succes/succesMessagesCp';
 
 /**
  * Controlador para registrar los datos personales de un campesino.
@@ -21,7 +22,7 @@ export const registerCampesinoPersonalData = async (req: CustomRequest, res: Res
     }
 
     // Verificar si el usuario ya tiene información personal registrada
-    if (await verifyCampesinoDataExists(userId, res)) return;
+    if (await verifyCampesinoDataExists(userId, req.body, res)) return;
 
     // Extraer el resto de los datos desde el body
     const {
@@ -68,19 +69,34 @@ export const registerCampesinoPersonalData = async (req: CustomRequest, res: Res
 };
 
 /**
- * Verifica si el usuario ya tiene registrada la información personal.
- * Si ya existe, envía una respuesta de error.
- *
- * @param userId - ID del usuario a verificar.
- * @param res - Objeto de respuesta de Express.
- * @returns Promise<boolean> - Devuelve true si ya existe información, false en caso contrario.
+ * Verifica si el usuario ya tiene registrada la información personal o si ya existen
+ * registros con el mismo número de identificación o nombre completo.
  */
-export const verifyCampesinoDataExists = async (userId: number, res: Response): Promise<boolean> => {
-  const existingData = await PersonalDataModel.findOne({ where: { userId } });
-  if (existingData) {
+export const verifyCampesinoDataExists = async (userId: number, data: any, res: Response): Promise<boolean> => {
+  // Verificar por userId (cada usuario solo puede tener un registro)
+  const existingDataByUser = await PersonalDataModel.findOne({ where: { userId } });
+  if (existingDataByUser) {
     res.status(400).json({
       msg: 'El usuario ya tiene registrada la información personal',
       error: 'El usuario ya tiene registrada la información personal'
+    });
+    return true;
+  }
+  // Verificar que el número de identificación sea único
+  const existingByIdentification = await PersonalDataModel.findOne({ where: { identificationNumber: data.identificationNumber } });
+  if (existingByIdentification) {
+    res.status(400).json({
+      msg: 'El número de identificación ya está registrado',
+      error: 'Número de identificación duplicado'
+    });
+    return true;
+  }
+  // Verificar que el nombre completo sea único
+  const existingByFullName = await PersonalDataModel.findOne({ where: { fullName: data.fullName } });
+  if (existingByFullName) {
+    res.status(400).json({
+      msg: 'El nombre completo ya está registrado',
+      error: 'Nombre completo duplicado'
     });
     return true;
   }
@@ -126,7 +142,6 @@ export const validateCampesinoPersonalData = (
     errors.push("El usuario debe ser mayor de 18 años.");
   }
 
-  // Se pueden agregar más validaciones de formato según se requiera
   return errors;
 };
 

@@ -22,10 +22,12 @@ export const PersonalDataModel = sequelize.define<PersonalDataInterface>('person
   fullName: {
     type: DataTypes.STRING,
     allowNull: false,
+    unique: true,  // Se asegura que el nombre completo sea único
   },
   identificationNumber: {
     type: DataTypes.STRING,
     allowNull: false,
+    unique: true,  // Se asegura que el número de identificación sea único
   },
   identificationType: {
     // Se definen los tipos de identificación comunes

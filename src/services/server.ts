@@ -15,10 +15,10 @@ import phoneVerificationRouter from '../agroIinova/auth/phone/routers/phoneRoute
 import loginUserRouter from '../agroIinova/auth/login/routes/loginRouter';
 import adminRouter from '../agroIinova/admin/routes/adminRoute';
 import clienteRouter from '../agroIinova/clientes/routes/clientRouter';
-import campesinoRouter from '../agroIinova/campesinos/routes/registerCampesinosRouter';
 import { Country } from '../agroIinova/auth/middleware/models/paisModel';
 import countryPais from '../agroIinova/auth/pais/routes/paisRouter';
 import CampiAmigosServer from '../agroIinova/campesinos/middleware/service/capiamigoServer';
+import ClientServer from '../agroIinova/clientes/middlewares/services/clientServer';
 
 
 // Configurar las variables de entorno del archivo .env
@@ -28,6 +28,7 @@ class Server {
     private app: Application;
     private port: string;
     private campiAmigosServer: CampiAmigosServer;
+    private clientServer: ClientServer;
 
 
     /**
@@ -37,7 +38,10 @@ class Server {
         this.app = express();
         this.port = process.env.PORT || '2025';
         this.campiAmigosServer = new CampiAmigosServer();
+        this.clientServer = new ClientServer();
+
         this.app.use(this.campiAmigosServer.getApp());
+        this.app.use(this.clientServer.getApp());
 
         this.listen();
         this.middlewares();
@@ -53,17 +57,16 @@ class Server {
         this.app.listen(this.port, () => {
             console.log('Aplicacion corriendo en el puerto ' + this.port);
         })
-    }
+    } 
 
 
     /**
      * Configura las rutas de la aplicación.
-     */
+     */ 
     routes() {
         // Ruta para registrar nuevos usuarios
         this.app.use('/auth/user', registerRouter, emailVerificationRoutes, phoneVerificationRouter, loginUserRouter, adminRouter, countryPais);
         this.app.use('/admin/user', adminRouter);
-        this.app.use('/client/user', clienteRouter);
     }
 
 

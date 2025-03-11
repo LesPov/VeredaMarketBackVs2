@@ -3,9 +3,9 @@ import { Response } from 'express';
 import { errorMessages } from '../../../auth/middleware/errors/errorMessages';
  
 import { CustomRequest } from '../../../auth/middleware/valdiateToken/validateToken';
-import SocioDemographicModel from '../../middlewares/models/socioDemographic.model';
-import { successMessagesCp } from '../../middlewares/succes/succesMessagesCp';
-import { errorMessagesCp } from '../../middlewares/errors/errorsMessagesCp';
+import SocioDemographicModel from '../../middleware/models/socioDemographic.model';
+import { successMessagesCp } from '../../middleware/succes/succesMessagesCp';
+import { errorMessagesCp } from '../../middleware/errors/errorsMessagesCp';
 
 /**
  * Controlador para registrar la información sociodemográfica de un campesino.

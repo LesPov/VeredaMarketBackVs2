@@ -11,7 +11,7 @@ export const userProfileModel = sequelize.define<UserProfileinterface>('userProf
   },
   userId: {
     type: DataTypes.INTEGER,
-    allowNull: false,
+    allowNull: false, 
     unique: true,
     references: {
       model: 'auth',
@@ -30,6 +30,23 @@ export const userProfileModel = sequelize.define<UserProfileinterface>('userProf
     type: DataTypes.STRING,
     allowNull: false,
   },
+  identificationType: {
+    // Se definen los tipos de identificación comunes
+    type: DataTypes.ENUM(
+      'Cédula',
+      'Tarjeta de Identidad',
+      'DNI',
+      'Pasaporte',
+      'Licencia de Conducir',
+      'Otro'
+    ),
+    allowNull: false,
+  },
+  identificationNumber: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    unique: true,  // Se asegura que el número de identificación sea único
+  },
   biography: {
     type: DataTypes.TEXT,
     allowNull: true,
@@ -38,7 +55,14 @@ export const userProfileModel = sequelize.define<UserProfileinterface>('userProf
     type: DataTypes.TEXT,
     allowNull: true,
   },
-
+  age: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
+  gender: {
+    type: DataTypes.ENUM('Mujer', 'Hombre', 'Otro género', 'Prefiero no declarar'),
+    allowNull: false, 
+  },
   
 status: {
     type: DataTypes.ENUM('Activado', 'Desactivado'), // Define un enum para limitar los valores posibles

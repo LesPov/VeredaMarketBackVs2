@@ -1,7 +1,7 @@
 import { Response } from 'express';
  import { CustomRequest } from '../../../auth/middleware/valdiateToken/validateToken';
 import { errorMessages } from '../../../auth/middleware/errors/errorMessages';
-import ProductiveInfoModel from '../../middlewares/models/productiveInfo.model';
+import ProductiveInfoModel from '../../middleware/models/productiveInfo.model';
 
 /**
  * Asegura que el usuario esté autenticado y retorna su userId.

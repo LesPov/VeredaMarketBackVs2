@@ -1,17 +1,16 @@
 import { Response } from 'express';
 import { errorMessages } from '../../../auth/middleware/errors/errorMessages';
-
 import { CustomRequest } from '../../../auth/middleware/valdiateToken/validateToken';
-import { errorMessagesCp } from '../../middlewares/errors/errorsMessagesCp';
-import { PersonalDataModel } from '../../middlewares/models/personalData.model';
-import { successMessagesCp } from '../../middlewares/succes/succesMessagesCp';
+import { errorMessagesCp } from '../../middleware/errors/errorsMessagesCp';
+import { successMessagesCp } from '../../middleware/succes/succesMessagesCp';
+import { userProfileModel } from '../../../auth/middleware/models/userProfileModel';
 
 /**
- * Controlador para registrar los datos personales de un campesino.
+ * Controlador para registrar los datos personales del campesino.
  */
 export const registerCampesinoPersonalData = async (req: CustomRequest, res: Response): Promise<void> => {
   try {
-    // Extraer el userId del token (validateToken ya asigna req.user)
+    // Extraer el userId del token
     const userId = req.user ? req.user.userId : null;
     console.log('User ID:', userId);
 
@@ -24,39 +23,43 @@ export const registerCampesinoPersonalData = async (req: CustomRequest, res: Res
     // Verificar si el usuario ya tiene información personal registrada
     if (await verifyCampesinoDataExists(userId, req.body, res)) return;
 
-    // Extraer el resto de los datos desde el body
+    // Extraer los datos correctos desde el body
     const {
-      fullName,
+      firstName,
+      lastName,
       identificationNumber,
       identificationType,
-      birthDate,
+      biography,
+      direccion,
       age,
       gender,
-      photo,
+      profilePicture, // en lugar de "photo"
     } = req.body;
 
     // Validar los datos personales del campesino
     const validationErrors = validateCampesinoPersonalData(
-      fullName,
+      firstName,
+      lastName,
       identificationNumber,
       identificationType,
-      birthDate,
       age,
       gender,
-      photo
+      profilePicture
     );
     processValidationErrors(validationErrors, res);
 
-    // Guardar en la base de datos
-    await PersonalDataModel.create({
+    // Guardar en la base de datos. El campo "status" se activa automáticamente por defecto.
+    await userProfileModel.create({
       userId,
-      fullName,
+      firstName,
+      lastName,
       identificationNumber,
       identificationType,
-      birthDate,
+      biography,
+      direccion,
       age,
       gender,
-      photo,
+      profilePicture,
     });
 
     // Enviar respuesta exitosa
@@ -70,11 +73,11 @@ export const registerCampesinoPersonalData = async (req: CustomRequest, res: Res
 
 /**
  * Verifica si el usuario ya tiene registrada la información personal o si ya existen
- * registros con el mismo número de identificación o nombre completo.
+ * registros con el mismo número de identificación o combinación de nombres.
  */
 export const verifyCampesinoDataExists = async (userId: number, data: any, res: Response): Promise<boolean> => {
   // Verificar por userId (cada usuario solo puede tener un registro)
-  const existingDataByUser = await PersonalDataModel.findOne({ where: { userId } });
+  const existingDataByUser = await userProfileModel.findOne({ where: { userId } });
   if (existingDataByUser) {
     res.status(400).json({
       msg: 'El usuario ya tiene registrada la información personal',
@@ -83,7 +86,7 @@ export const verifyCampesinoDataExists = async (userId: number, data: any, res: 
     return true;
   }
   // Verificar que el número de identificación sea único
-  const existingByIdentification = await PersonalDataModel.findOne({ where: { identificationNumber: data.identificationNumber } });
+  const existingByIdentification = await userProfileModel.findOne({ where: { identificationNumber: data.identificationNumber } });
   if (existingByIdentification) {
     res.status(400).json({
       msg: 'El número de identificación ya está registrado',
@@ -91,12 +94,12 @@ export const verifyCampesinoDataExists = async (userId: number, data: any, res: 
     });
     return true;
   }
-  // Verificar que el nombre completo sea único
-  const existingByFullName = await PersonalDataModel.findOne({ where: { fullName: data.fullName } });
-  if (existingByFullName) {
+  // (Opcional) Verificar que la combinación de firstName y lastName sea única si es necesario
+  const existingByName = await userProfileModel.findOne({ where: { firstName: data.firstName, lastName: data.lastName } });
+  if (existingByName) {
     res.status(400).json({
-      msg: 'El nombre completo ya está registrado',
-      error: 'Nombre completo duplicado'
+      msg: 'El nombre ya está registrado',
+      error: 'Nombre duplicado'
     });
     return true;
   }
@@ -105,21 +108,20 @@ export const verifyCampesinoDataExists = async (userId: number, data: any, res: 
 
 /**
  * Valida los campos obligatorios y formatos básicos de los datos personales del campesino.
- * Además, verifica que el usuario sea mayor de 18 años basado en la fecha de nacimiento.
  */
 export const validateCampesinoPersonalData = (
-  fullName: string,
+  firstName: string,
+  lastName: string,
   identificationNumber: string,
   identificationType: string,
-  birthDate: string,
   age: string,
   gender: string,
-  photo: string
+  profilePicture: string
 ): string[] => {
   const errors: string[] = [];
 
   // Validar campos obligatorios
-  if (!fullName || !identificationNumber || !identificationType || !birthDate || !age || !gender || !photo) {
+  if (!firstName || !lastName || !identificationNumber || !identificationType || !age || !gender || !profilePicture) {
     errors.push(errorMessagesCp.requiredFields);
   }
 
@@ -128,19 +130,7 @@ export const validateCampesinoPersonalData = (
     errors.push("La edad debe ser un número válido.");
   }
 
-  // Calcular la edad a partir de la fecha de nacimiento
-  const currentDate = new Date();
-  const birthDateObj = new Date(birthDate);
-  let calculatedAge = currentDate.getFullYear() - birthDateObj.getFullYear();
-  const monthDiff = currentDate.getMonth() - birthDateObj.getMonth();
-  if (monthDiff < 0 || (monthDiff === 0 && currentDate.getDate() < birthDateObj.getDate())) {
-    calculatedAge--;
-  }
-
-  // Validar que el usuario sea mayor de 18 años
-  if (calculatedAge < 18) {
-    errors.push("El usuario debe ser mayor de 18 años.");
-  }
+  // Puedes agregar validaciones adicionales (por ejemplo, formato del número de identificación)
 
   return errors;
 };

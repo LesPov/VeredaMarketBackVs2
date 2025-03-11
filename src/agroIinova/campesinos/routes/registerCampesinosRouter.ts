@@ -1,14 +1,14 @@
 import { Router } from "express";
 import validateToken from "../../auth/middleware/valdiateToken/validateToken";
 import validateRole from "../../auth/middleware/validateRole/validateRole";
-import { registerCampesinoPersonalData } from "../controllers/registercampesino/registerCampesinosController";
-import { registerFarmProfile } from "../controllers/registercampesino/registerFamilyCapController";
-import { registerFamilyData } from "../controllers/registercampesino/registerFamilyController";
-import { registerInfrastructure } from "../controllers/registercampesino/registerInfrastructureController";
-import { registerMainProducts } from "../controllers/registercampesino/registerMainProducts";
-import { registerProductiveInfo } from "../controllers/registercampesino/registerProductiveInfoController";
-import { registerSocioDemographicData } from "../controllers/registercampesino/registerSocioDemographicController";
-import { registerTechnologyPractice } from "../controllers/registercampesino/registerTechnologyPracticeController";
+import { registerCampesinoPersonalData } from "../../campesinos/controller/registercampesino/registerCampesinosController";
+import { registerFarmProfile } from "../../campesinos/controller/registercampesino/registerFamilyCapController";
+import { registerFamilyData } from "../../campesinos/controller/registercampesino/registerFamilyController";
+import { registerInfrastructure } from "../../campesinos/controller/registercampesino/registerInfrastructureController";
+import { registerMainProducts } from "../../campesinos/controller/registercampesino/registerMainProducts";
+import { registerProductiveInfo } from "../../campesinos/controller/registercampesino/registerProductiveInfoController";
+import { registerSocioDemographicData } from "../../campesinos/controller/registercampesino/registerSocioDemographicController";
+import { registerTechnologyPractice } from "../../campesinos/controller/registercampesino/registerTechnologyPracticeController";
 
 const registerCampesinoRouter = Router();
 
@@ -17,9 +17,9 @@ const registerCampesinoRouter = Router();
  * La ruta está protegida y solo es accesible para usuarios con rol 'campesino'.
  */
 registerCampesinoRouter.post(
-    '/client/register-campesino',
+    '/campesino/register-campesino',
     validateToken,
-    validateRole('client'),
+    validateRole('admin'),
     registerCampesinoPersonalData
 );
 
@@ -28,9 +28,9 @@ registerCampesinoRouter.post(
  * La ruta está protegida y solo es accesible para usuarios con rol 'campesino'.
  */
 registerCampesinoRouter.post(
-    '/client/register-campesino/socio-demographic',
+    '/campesino/register-campesino/socio-demographic',
     validateToken,
-    validateRole('client'),
+    validateRole('admin'),
     registerSocioDemographicData
   );
 
@@ -39,9 +39,9 @@ registerCampesinoRouter.post(
  * Protegida y accesible solo para usuarios con rol 'campesino'.
  */
 registerCampesinoRouter.post(
-    '/client/register-campesino/family-composition',
+    '/campesino/register-campesino/family-composition',
     validateToken,
-    validateRole('client'),
+    validateRole('admin'),
     registerFamilyData
 );
 /**
@@ -49,16 +49,16 @@ registerCampesinoRouter.post(
  * La ruta está protegida y solo es accesible para usuarios con rol 'campesino'.
  */
 registerCampesinoRouter.post(
-    '/client/register-campesino/farm-profile',
+    '/campesino/register-campesino/farm-profile',
     validateToken,
-    validateRole('client'),
+    validateRole('admin'),
     registerFarmProfile
   );
 
   registerCampesinoRouter.post(
-    '/client/register-campesino/infrastructure',
+    '/campesino/register-campesino/infrastructure',
     validateToken,
-    validateRole('client'),
+    validateRole('admin'),
     registerInfrastructure
   );
 
@@ -67,9 +67,9 @@ registerCampesinoRouter.post(
  * La ruta está protegida y solo es accesible para usuarios con rol 'campesino'.
  */
 registerCampesinoRouter.post(
-    '/client/register-campesino/productive-info',
+    '/campesino/register-campesino/productive-info',
     validateToken,
-    validateRole('client'),
+    validateRole('admin'),
     registerProductiveInfo
   );
 
@@ -78,9 +78,9 @@ registerCampesinoRouter.post(
  * La ruta está protegida y solo es accesible para usuarios con rol 'campesino'.
  */
   registerCampesinoRouter.post(
-    '/client/register-campesino/main-products',
+    '/campesino/register-campesino/main-products',
     validateToken,
-    validateRole('client'),
+    validateRole('admin'),
     registerMainProducts
   );
 
@@ -89,9 +89,9 @@ registerCampesinoRouter.post(
  * La ruta está protegida y solo es accesible para usuarios con rol 'campesino'.
  */
   registerCampesinoRouter.post(
-  '/client/register-campesino/technology-practice',
+  '/campesino/register-campesino/technology-practice',
   validateToken,
-  validateRole('client'),
+  validateRole('admin'),
   registerTechnologyPractice
 );
 

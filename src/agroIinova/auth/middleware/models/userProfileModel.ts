@@ -74,3 +74,4 @@ status: {
 // Relación entre Auth (usuario) y UserProfile (perfil de usuario)
 AuthModel.hasOne(userProfileModel, { foreignKey: 'userId' });
 userProfileModel.belongsTo(AuthModel, { foreignKey: 'userId' });
+ 

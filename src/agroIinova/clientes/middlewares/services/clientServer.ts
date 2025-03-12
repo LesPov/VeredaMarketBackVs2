@@ -1,6 +1,7 @@
 import dotenv from 'dotenv';
 import express, { Application } from 'express';
 import clientRouter from '../../routes/clientRouter';
+import registerCampesino from '../../routes/registerCampesinoRoutes';
 
 dotenv.config();
 
@@ -15,7 +16,7 @@ class ClientServer {
     }
 
     routes() {
-        this.app.use('/user', clientRouter);
+        this.app.use('/user', clientRouter,registerCampesino);
     }
 
     middlewares() {

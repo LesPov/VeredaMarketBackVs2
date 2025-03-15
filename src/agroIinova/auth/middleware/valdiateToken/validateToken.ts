@@ -42,6 +42,9 @@ const handleAuthError = (res: Response, message: string) => {
 // Middleware principal que valida el token JWT en las solicitudes entrantes.
 // Se asegura de que la solicitud tenga un token de autorización válido y lo decodifica.
 const validateToken = (req: CustomRequest, res: Response, next: NextFunction) => {
+    if (req.method === 'OPTIONS') {
+        return next();
+    }
     const headerToken = req.headers['authorization'];
     const bearerToken = extractBearerToken(headerToken);
 

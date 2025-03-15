@@ -7,7 +7,7 @@ import express, { Application } from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import { AuthModel } from '../agroIinova/auth/middleware/models/authModel';
-import { userProfileModel } from '../agroIinova/auth/middleware/models/userProfileModel';
+import { userProfileModel } from '../agroIinova/auth/profile/middleware/models/userProfileModel';
 import { VerificationModel } from '../agroIinova/auth/middleware/models/verificationModel';
 import registerRouter from '../agroIinova/auth/register/routes/registerRouter';
 import emailVerificationRoutes from '../agroIinova/auth/email/routes/emailRoutes';
@@ -19,6 +19,8 @@ import { Country } from '../agroIinova/auth/middleware/models/paisModel';
 import countryPais from '../agroIinova/auth/pais/routes/paisRouter';
 import CampiAmigosServer from '../agroIinova/campesinos/middleware/service/capiamigoServer';
 import ClientServer from '../agroIinova/clientes/middlewares/services/clientServer';
+import ProfileServer from '../agroIinova/auth/profile/middleware/services/profileServer';
+import path from 'path';
 
 
 // Configurar las variables de entorno del archivo .env
@@ -29,6 +31,7 @@ class Server {
     private port: string;
     private campiAmigosServer: CampiAmigosServer;
     private clientServer: ClientServer;
+    private prfileServer: ProfileServer;
 
 
     /**
@@ -39,9 +42,11 @@ class Server {
         this.port = process.env.PORT || '2025';
         this.campiAmigosServer = new CampiAmigosServer();
         this.clientServer = new ClientServer();
+        this.prfileServer = new ProfileServer();
 
         this.app.use(this.campiAmigosServer.getApp());
         this.app.use(this.clientServer.getApp());
+        this.app.use(this.prfileServer.getApp());
 
         this.listen();
         this.middlewares();
@@ -77,6 +82,11 @@ class Server {
         // Parseo body   
         this.app.use(express.json());
 
+        this.app.use('/uploads', express.static(path.join(__dirname, '..', '..', 'uploads'), {
+            setHeaders: (res, path) => {
+                console.log(`Accediendo a: ${path}`);  // Aquí se agrega el console.log
+            } 
+        }));
         // Cors
         this.app.use(cors());
     }

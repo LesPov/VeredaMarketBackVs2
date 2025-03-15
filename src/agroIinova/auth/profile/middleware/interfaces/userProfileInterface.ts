@@ -1,5 +1,5 @@
 import { Model } from 'sequelize';
-import { AuthInterface } from './authInterface';
+import { AuthInterface } from '../../../middleware/interfaces/authInterface';
 
 // Modelo para el perfil de usuario
 export interface UserProfileinterface extends Model {
@@ -12,7 +12,7 @@ export interface UserProfileinterface extends Model {
   identificationNumber: string;
   biography: string | null;
   direccion: string | null;
-  age: number;
+  birthDate: string; // Formato YYYY-MM-DD
   gender: 'Mujer' | 'Hombre' | 'Otro género' | 'Prefiero no declarar';
   status: 'Activado' | 'Desactivado';
   auth?: AuthInterface; // Relación opcional con el modelo de autenticación

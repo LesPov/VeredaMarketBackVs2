@@ -1,4 +1,3 @@
-// uploadConfig.ts (Configuración de multer)
 import multer from 'multer';
 import path from 'path';
 import fs from 'fs';
@@ -15,17 +14,7 @@ const ensureDirectoryExistence = (dir: string) => {
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        const { perfilCampesino,  } = req.body;
-        console.log('req.body:', req.body); // Para verificar si `perfilCampesino`  se envían correctamente
-    
-        let uploadPath;
-        if (perfilCampesino) {
-            uploadPath = path.join('uploads/perilCampesino', perfilCampesino);
-        }
-         else {
-            return cb(new Error("imagen de perfil no especificada no especificada"), '');
-        }
-    
+        const uploadPath = path.join('uploads/client/profile');
         ensureDirectoryExistence(uploadPath);
         cb(null, uploadPath);
     },

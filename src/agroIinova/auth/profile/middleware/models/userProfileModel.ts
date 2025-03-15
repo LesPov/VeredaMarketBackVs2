@@ -1,7 +1,7 @@
 import { DataTypes } from "sequelize";
-import sequelize from "../../../../database/connection";
-import { AuthModel } from "./authModel";
-import { UserProfileinterface } from "../../profile/middleware/interfaces/userProfileInterface";
+import sequelize from "../../../../../database/connection";
+import { AuthModel } from "../../../middleware/models/authModel";
+import { UserProfileinterface } from "../interfaces/userProfileInterface";
 
 export const userProfileModel = sequelize.define<UserProfileinterface>('userProfile', {
   id: {
@@ -49,24 +49,24 @@ export const userProfileModel = sequelize.define<UserProfileinterface>('userProf
   biography: {
     type: DataTypes.TEXT,
     allowNull: true,
-  },
+  }, 
   direccion: {
     type: DataTypes.TEXT,
     allowNull: true,
   },
-  age: {
-    type: DataTypes.INTEGER,
+  birthDate: {
+    type: DataTypes.DATEONLY,
     allowNull: false,
   },
   gender: {
     type: DataTypes.ENUM('Mujer', 'Hombre', 'Otro género', 'Prefiero no declarar'),
-    allowNull: false, 
+    allowNull: false,  
   },
   status: {
-    type: DataTypes.ENUM('Activado', 'Desactivado'),
+    type: DataTypes.ENUM('pendiente', 'aprobado', 'rechazado'),
     allowNull: false,
-    defaultValue: 'Activado',
-  },
+    defaultValue: 'pendiente',
+},
   // Nueva columna para diferenciar usuarios que aceptan pertenecer a Campiamigo
   campiamigo: {
     type: DataTypes.BOOLEAN,

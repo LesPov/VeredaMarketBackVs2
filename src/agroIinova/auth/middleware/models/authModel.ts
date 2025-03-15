@@ -63,7 +63,7 @@ export const AuthModel = sequelize.define<AuthInterface>('auth', {
         allowNull: true, // El campo puede ser nulo
         unique: true,
     },
-
+ 
     /**
      * Rol del usuario en la aplicación (ej. 'admin', 'user', etc.).
      * Este campo es obligatorio y no puede ser nulo.
@@ -85,4 +85,4 @@ export const AuthModel = sequelize.define<AuthInterface>('auth', {
 }, {
     tableName: 'auth',
     timestamps: true, // No agregamos las columnas createdAt y updatedAt
-}); 
+});  

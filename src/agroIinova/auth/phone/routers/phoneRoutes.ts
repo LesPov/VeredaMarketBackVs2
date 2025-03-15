@@ -13,7 +13,7 @@ const phoneVerificationRouter = Router();
 phoneVerificationRouter.post("/phone/send", sendVerificationCodePhone);
 
 
-
+ 
 /**
  * PUT /api/user/verify/phone
  * Ruta para verificar el número de teléfono.

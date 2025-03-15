@@ -1,4 +1,4 @@
-import { userProfileModel } from "../../middleware/models/userProfileModel";
+import { userProfileModel } from "../../profile/middleware/models/userProfileModel";
 
 /**
  * Inicializa el perfil de un usuario en la base de datos.
@@ -16,7 +16,15 @@ export const initializeUserProfile = async (userId: number): Promise<void> => {
     // Crea una entrada en el perfil de usuario con el ID proporcionado
     await userProfileModel.create({
         userId: userId,
-        firstName: '', // Inicializa el campo de nombre con una cadena vacía
-        lastName: '',  // Inicializa el campo de apellido con una cadena vacía
+        firstName: '', // Se inicializa vacío
+        lastName: '',  // Se inicializa vacío
+        identificationType: 'Otro', // Valor predeterminado
+        identificationNumber: '000000000', // Temporal hasta que el usuario lo actualice
+        age: 18, // Valor predeterminado
+        gender: 'Prefiero no declarar', // Predeterminado
+        profilePicture: null, // Puede ser null
+        biography: '',
+        direccion: '',
+        status: 'Activado', // Estado por defecto
     });
 };

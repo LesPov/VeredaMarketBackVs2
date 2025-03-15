@@ -1,11 +1,11 @@
 import dotenv from 'dotenv';
 import express, { Application } from 'express';
-import clientRouter from '../../routes/clientRouter';
-import registerPersonalData from '../../../auth/profile/routes/ProfileRoutes';
+import registerPersonalData from '../../routes/ProfileRoutes';
+import cors from 'cors';
 
 dotenv.config();
 
-class ClientServer {
+class ProfileServer {
     private app: Application;
 
     constructor() {
@@ -16,12 +16,16 @@ class ClientServer {
     }
 
     routes() {
-        this.app.use('/user', clientRouter);
+        this.app.use('/user/profile',registerPersonalData);
     }
 
     middlewares() {
         this.app.use(express.json());
+        this.app.use(cors({
+        }));
+        this.app.options('*', cors());
     }
+
 
     async dbConnect() {
         try {
@@ -37,4 +41,4 @@ class ClientServer {
     }
 }
 
-export default ClientServer;
+export default ProfileServer;

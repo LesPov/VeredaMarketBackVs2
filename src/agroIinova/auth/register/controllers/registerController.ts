@@ -25,7 +25,7 @@ import { handleServerError } from '../errors/handleServerError';
  * 
  * @param req - La solicitud HTTP entrante que contiene los datos del usuario a registrar.
  * @param res - La respuesta HTTP que se envía de vuelta al cliente.
- */
+ */ 
 export const newUser = async (req: Request, res: Response) => {
     try {
         // Extraer los datos del cuerpo de la solicitud
@@ -51,8 +51,7 @@ export const newUser = async (req: Request, res: Response) => {
         handleExistingUserError(existingUserError, res); 
 
         // Si todo es válido, proceder a encriptar la contraseña antes de guardarla
-        const hashedPassword = await bcrypt.hash(password, 10);
-
+        const hashedPassword = await bcrypt.hash(password, 10); 
         // Crear un nuevo usuario en la base de datos con la información proporcionada
         const newUser = await createNewUser(username, hashedPassword, email, rol);
 

@@ -21,28 +21,23 @@ const handleImageUpload = (req: Request, res: Response, callback: () => Promise<
     });
 };
 
-// Función para validar los datos personales usando el campo birthDate (fecha de nacimiento)
+// Función de validación actualizada (ver sección anterior)
 export const validateCampesinoPersonalData = (
     firstName: string,
     lastName: string,
-    identificationNumber: string,
-    identificationType: string,
     birthDate: string,
     gender: string,
-    profilePicture?: string // Ahora es opcional
+    profilePicture?: string
 ): string[] => {
     const errors: string[] = [];
-    // Se valida que los campos obligatorios estén presentes (excepto la imagen)
-    if (!firstName || !lastName || !identificationNumber || !identificationType || !birthDate || !gender) {
+    if (!firstName || !lastName || !birthDate || !gender) {
         errors.push(errorMessagesCp.requiredFields);
     }
-    // Validamos que birthDate sea una fecha válida
     if (birthDate && isNaN(Date.parse(birthDate))) {
         errors.push("La fecha de nacimiento no es válida.");
     }
     return errors;
 };
-
 
 export const processValidationErrors = (errors: string[], res: Response): void => {
     if (errors.length > 0) {
@@ -100,31 +95,31 @@ export const updateProfileController = async (req: CustomRequest, res: Response)
             // Extraemos la imagen solo si se subió
             const profilePicture: string | undefined = req.file?.filename;
 
-            // Validamos los datos obligatorios (la imagen ya no es obligatoria)
+            // Validamos los datos obligatorios sin exigir identificación
             const validationErrors = validateCampesinoPersonalData(
                 firstName,
                 lastName,
-                identificationNumber,
-                identificationType,
                 birthDate,
                 gender,
-                profilePicture // Puede ser undefined
+                profilePicture
             );
             processValidationErrors(validationErrors, res);
 
-            // Verificamos duplicados: número de identificación
-            const duplicateIdentification = await userProfileModel.findOne({
-                where: {
-                    identificationNumber,
-                    userId: { [Op.ne]: userId }
-                }
-            });
-            if (duplicateIdentification) {
-                res.status(400).json({
-                    msg: 'El número de identificación ya está registrado',
-                    error: 'Número de identificación duplicado'
+            // Verificamos duplicados: número de identificación solo si se envía
+            if (identificationNumber) {
+                const duplicateIdentification = await userProfileModel.findOne({
+                    where: {
+                        identificationNumber,
+                        userId: { [Op.ne]: userId }
+                    }
                 });
-                return;
+                if (duplicateIdentification) {
+                    res.status(400).json({
+                        msg: 'El número de identificación ya está registrado',
+                        error: 'Número de identificación duplicado'
+                    });
+                    return;
+                }
             }
 
             // Opcional: verificación de nombre y apellido
@@ -144,33 +139,42 @@ export const updateProfileController = async (req: CustomRequest, res: Response)
             }
 
             // Buscamos el perfil existente del usuario
+            // Buscamos el perfil existente del usuario
             const existingProfile = await userProfileModel.findOne({ where: { userId } });
             if (!existingProfile) {
                 res.status(404).json({ msg: 'Perfil no encontrado para actualizar' });
                 return;
             }
 
-            const campiamigoBoolean = campiamigo === true || campiamigo === 'true';
-
-            // Construimos el objeto de actualización; solo incluimos la imagen si se proporcionó
+            // Construimos el objeto de actualización; incluimos solo los campos obligatorios
             const updateData: any = {
                 firstName,
                 lastName,
-                identificationNumber,
-                identificationType,
                 biography,
                 direccion,
                 birthDate,
                 gender,
-                campiamigo: campiamigoBoolean,
             };
 
+            if ('campiamigo' in req.body) {
+                const campiamigoBoolean = campiamigo === true || campiamigo === 'true';
+                updateData.campiamigo = campiamigoBoolean;
+              }
+              
+
+            if (identificationNumber) {
+                updateData.identificationNumber = identificationNumber;
+            }
+            if (identificationType) {
+                updateData.identificationType = identificationType;
+            }
             if (profilePicture) {
                 updateData.profilePicture = profilePicture;
             }
 
             // Actualizamos el perfil existente
             await existingProfile.update(updateData);
+
 
             sendSuccessResponse(successMessagesCp.personalDataRegistered, res);
             return;

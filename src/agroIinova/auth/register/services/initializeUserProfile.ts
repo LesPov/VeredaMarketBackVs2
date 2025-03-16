@@ -20,7 +20,7 @@ export const initializeUserProfile = async (userId: number): Promise<void> => {
         lastName: '',  // Se inicializa vacío
         identificationType: 'Otro', // Valor predeterminado
         identificationNumber: '000000000', // Temporal hasta que el usuario lo actualice
-        age: 18, // Valor predeterminado
+        birthDate: '', // Valor predeterminado
         gender: 'Prefiero no declarar', // Predeterminado
         profilePicture: null, // Puede ser null
         biography: '',

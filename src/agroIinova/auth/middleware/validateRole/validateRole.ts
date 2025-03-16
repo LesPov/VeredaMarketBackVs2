@@ -11,11 +11,9 @@ const verifyToken = (token: string): any => {
   return jwt.verify(token, process.env.SECRET_KEY || 'pepito123');
 };
 
-const isRoleValid = (userRole: string, requiredRole: string): boolean => {
-  return userRole === requiredRole;
-};
-
-const validateRole = (requiredRole: string) => {
+const validateRole = (allowedRoles: string | string[]) => {
+  // Convertir a arreglo en caso de que se reciba un solo rol
+  const rolesArray = Array.isArray(allowedRoles) ? allowedRoles : [allowedRoles];
   return (req: Request, res: Response, next: NextFunction): void => {
     const token = extractToken(req);
     if (!token) {
@@ -27,7 +25,8 @@ const validateRole = (requiredRole: string) => {
     try {
       const decodedToken = verifyToken(token);
       const userRole = decodedToken.rol;
-      if (isRoleValid(userRole, requiredRole)) {
+      // Verifica si el rol del usuario está en el arreglo de roles permitidos
+      if (rolesArray.includes(userRole)) {
         next();
       } else {
         res.status(403).json({

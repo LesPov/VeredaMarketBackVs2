@@ -4,9 +4,8 @@ import validateRole from "../../auth/middleware/validateRole/validateRole";
 import { getAllUsersController } from "../controllers/getAllUsersController";
 
 const adminRouter = Router();
-// Ruta para que el admin consulte todos los usuarios
-adminRouter.get('/users', validateToken, validateRole('admin'), getAllUsersController);
-
-
+adminRouter.get('/usersProfile', validateToken, validateRole('admin'), getAllUsersController);
+ 
 export default adminRouter;
 
+  

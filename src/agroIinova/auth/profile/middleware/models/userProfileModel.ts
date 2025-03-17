@@ -42,15 +42,14 @@ export const userProfileModel = sequelize.define<UserProfileinterface>('userProf
     allowNull: false,
   },
   identificationNumber: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    unique: true,
+    type: DataTypes.STRING, 
+    allowNull: true,
   },
   biography: {
     type: DataTypes.TEXT,
     allowNull: true,
   }, 
-  direccion: {
+  direccion: { 
     type: DataTypes.TEXT,
     allowNull: true,
   },

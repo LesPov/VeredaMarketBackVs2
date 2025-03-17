@@ -19,12 +19,12 @@ export const initializeUserProfile = async (userId: number): Promise<void> => {
         firstName: '', // Se inicializa vacío
         lastName: '',  // Se inicializa vacío
         identificationType: 'Otro', // Valor predeterminado
-        identificationNumber: '000000000', // Temporal hasta que el usuario lo actualice
-        birthDate: '', // Valor predeterminado
+        identificationNumber: '', // Temporal hasta que el usuario lo actualice
+        birthDate: '1970-01-01', // Fecha por defecto válida
         gender: 'Prefiero no declarar', // Predeterminado
         profilePicture: null, // Puede ser null
         biography: '',
         direccion: '',
-        status: 'Activado', // Estado por defecto
+        status: 'pendiente', // Estado por defecto
     });
 };

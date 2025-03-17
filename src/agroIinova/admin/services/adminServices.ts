@@ -1,12 +1,10 @@
 import dotenv from 'dotenv';
 import express, { Application } from 'express';
-import registerPersonalData from '../../routes/ProfileRoutes';
-import cors from 'cors';
-import { userProfileModel } from '../models/userProfileModel';
+import adminRouter from '../routes/adminRoute';
 
 dotenv.config();
 
-class ProfileServer {
+class AdminServer {
     private app: Application;
 
     constructor() {
@@ -17,21 +15,16 @@ class ProfileServer {
     }
 
     routes() {
-        this.app.use('/user/profile', registerPersonalData);
+        this.app.use('/user/admin', adminRouter );
     }
 
     middlewares() {
         this.app.use(express.json());
-        this.app.use(cors({
-        }));
-        this.app.options('*', cors());
     }
-
 
     async dbConnect() {
         try {
-            await userProfileModel.sync();
-
+     
             console.log('Modelos de denuncias sincronizados correctamente.');
         } catch (error) {
             console.error('Error al sincronizar los modelos de denuncias:', error);
@@ -43,4 +36,4 @@ class ProfileServer {
     }
 }
 
-export default ProfileServer;
+export default AdminServer;

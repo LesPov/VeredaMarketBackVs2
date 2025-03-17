@@ -10,7 +10,7 @@ import sequelize from '../../../../database/connection';
  * contraseña, correo electrónico, número de teléfono y rol.
  * 
  * @model AuthModel
- * @interface AuthInterface
+ * @interface AuthInterface 
  */
 export const AuthModel = sequelize.define<AuthInterface>('auth', {
 

@@ -20,6 +20,7 @@ import countryPais from '../agroIinova/auth/pais/routes/paisRouter';
 import CampiAmigosServer from '../agroIinova/campesinos/middleware/service/capiamigoServer';
 import ClientServer from '../agroIinova/clientes/middlewares/services/clientServer';
 import ProfileServer from '../agroIinova/auth/profile/middleware/services/profileServer';
+import AdminServer from '../agroIinova/admin/services/adminServices';
 import path from 'path';
 
 
@@ -32,6 +33,7 @@ class Server {
     private campiAmigosServer: CampiAmigosServer;
     private clientServer: ClientServer;
     private prfileServer: ProfileServer;
+    private adminServer: AdminServer;
 
 
     /**
@@ -43,10 +45,12 @@ class Server {
         this.campiAmigosServer = new CampiAmigosServer();
         this.clientServer = new ClientServer();
         this.prfileServer = new ProfileServer();
+        this.adminServer = new AdminServer();
 
         this.app.use(this.campiAmigosServer.getApp());
         this.app.use(this.clientServer.getApp());
         this.app.use(this.prfileServer.getApp());
+        this.app.use(this.adminServer.getApp());
 
         this.listen();
         this.middlewares();
@@ -71,7 +75,6 @@ class Server {
     routes() {
         // Ruta para registrar nuevos usuarios
         this.app.use('/auth/user', registerRouter, emailVerificationRoutes, phoneVerificationRouter, loginUserRouter, adminRouter, countryPais);
-        this.app.use('/admin/user', adminRouter);
     }
 
 
@@ -97,7 +100,6 @@ class Server {
     async dbConnect() {
         try {
             await AuthModel.sync();
-            await userProfileModel.sync();
             await VerificationModel.sync();
             await Country.sync();
 

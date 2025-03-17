@@ -22,6 +22,7 @@ import ClientServer from '../agroIinova/clientes/middlewares/services/clientServ
 import ProfileServer from '../agroIinova/auth/profile/middleware/services/profileServer';
 import AdminServer from '../agroIinova/admin/services/adminServices';
 import path from 'path';
+import updateStatusRouter from '../agroIinova/auth/updateStatusRouter';
 
 
 // Configurar las variables de entorno del archivo .env
@@ -75,6 +76,8 @@ class Server {
     routes() {
         // Ruta para registrar nuevos usuarios
         this.app.use('/auth/user', registerRouter, emailVerificationRoutes, phoneVerificationRouter, loginUserRouter, adminRouter, countryPais);
+        this.app.use('/auth/user/updateStatus', updateStatusRouter);
+
     }
 
 

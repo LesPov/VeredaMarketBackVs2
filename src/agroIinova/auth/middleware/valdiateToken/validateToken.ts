@@ -30,7 +30,7 @@ const extractBearerToken = (headerToken: string | undefined): string | null => {
 // Si no se encuentra la clave secreta en las variables de entorno, usa un valor por defecto ('pepito123').
 // Esta función decodifica el token y retorna la información contenida en él.
 const verifyToken = (token: string): any => {
-    return jwt.verify(token, process.env.SECRET_KEY || 'pepito123');
+    return jwt.verify(token, process.env.SECRET_KEY || 'pepito123'); 
 };
 
 // Función auxiliar que gestiona los errores de autenticación.
@@ -56,7 +56,7 @@ const validateToken = (req: CustomRequest, res: Response, next: NextFunction) =>
     try {
         // Verifica y decodifica el token
         const decodedToken = verifyToken(bearerToken);
-        req.user = { userId: decodedToken.userId, rol: decodedToken.rol };
+        req.user = { userId: decodedToken.userId || decodedToken.id, rol: decodedToken.rol };
         next();
     } catch (error) {
         handleAuthError(res, errorMessages.invalidToken);

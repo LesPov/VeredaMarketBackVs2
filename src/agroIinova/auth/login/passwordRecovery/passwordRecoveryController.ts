@@ -24,7 +24,7 @@ export const requestPasswordReset = async (req: Request, res: Response) => {
             return;
         }
 
-        // 3. Verificación del estado del usuario isverified
+        // 3. Verificación del estado del usuario isverified 
         const isVerified = checkisUserVerified(user);
         handleUnverifiedUserError(isVerified, res);
 

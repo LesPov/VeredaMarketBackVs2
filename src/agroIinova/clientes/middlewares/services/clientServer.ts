@@ -4,7 +4,7 @@ import clientRouter from '../../routes/clientRouter';
 import registerPersonalData from '../../../auth/profile/routes/ProfileRoutes';
 
 dotenv.config();
-
+ 
 class ClientServer {
     private app: Application;
 
@@ -13,10 +13,11 @@ class ClientServer {
         this.middlewares(); // Aplica primero los middlewares
         this.routes();      // Luego define las rutas
         this.dbConnect();
-    }
+    } 
 
     routes() {
         this.app.use('/user', clientRouter);
+        
     }
 
     middlewares() {

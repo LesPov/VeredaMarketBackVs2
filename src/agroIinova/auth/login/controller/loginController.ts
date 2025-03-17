@@ -11,7 +11,7 @@ import { handleLoginAttempts } from '../utils/loginAttempts/loginAttemptsService
 import { handleSuccessfulLogin } from '../utils/handleSuccessfu/handleSuccessfulLogin';
 import { handleServerErrorLogin } from '../utils/errors/handleServerError';
 
-/**
+/** 
  * Controlador para manejar la solicitud de inicio de sesión de un usuario.
  */
 export const loginUser = async (req: Request, res: Response) => {

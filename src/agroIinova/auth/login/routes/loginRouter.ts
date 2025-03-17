@@ -14,7 +14,7 @@ const loginUserRouter = Router();
  *  @body {string} password - Contraseña del usuario.
  *  @returns {object} - Token de acceso y detalles del usuario si el inicio de sesión es exitoso.
  */
-loginUserRouter.post('/login', loginUser);
+loginUserRouter.post('/login', loginUser); 
 
 
 /**

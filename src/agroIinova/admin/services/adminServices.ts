@@ -27,9 +27,9 @@ class AdminServer {
     async dbConnect() {
         try {
 
-            console.log('Modelos de denuncias sincronizados correctamente.');
+            console.log('Modelos  sincronizados correctamente.');
         } catch (error) {
-            console.error('Error al sincronizar los modelos de denuncias:', error);
+            console.error('Error al sincronizar los modelos :', error);
         }
     }
 

@@ -1,4 +1,4 @@
-import { Model } from "sequelize";
+import { Model } from "sequelize"; 
 
 export interface FarmProfileInterface extends Model {
     id?: number;

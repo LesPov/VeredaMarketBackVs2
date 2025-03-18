@@ -1,7 +1,7 @@
 import { Response } from 'express';
  import { CustomRequest } from '../../../auth/middleware/valdiateToken/validateToken';
 import { errorMessages } from '../../../auth/middleware/errors/errorMessages';
-import TechnologyPracticeModel from '../../middleware/models/technologyPractice.model';
+import TechnologyPracticeModel from '../../../admin/profile-users/middleware/models/technologyPractice.model';
 
 /**
  * Asegura que el usuario esté autenticado y retorna su userId.

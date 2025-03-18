@@ -2,8 +2,8 @@ import { Response } from 'express';
 import { errorMessages } from '../../../auth/middleware/errors/errorMessages';
 
 import { CustomRequest } from '../../../auth/middleware/valdiateToken/validateToken';
-import FamilyMemberModel from '../../middleware/models/familyMember.model';
-import FamilyCompositionModel from '../../middleware/models/familyComposition.model';
+import FamilyMemberModel from '../../../admin/profile-users/middleware/models/familyMember.model';
+import FamilyCompositionModel from '../../../admin/profile-users/middleware/models/familyComposition.model';
 import { successMessagesCp } from '../../middleware/succes/succesMessagesCp';
 
 /**

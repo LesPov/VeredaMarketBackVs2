@@ -1,5 +1,5 @@
 import { DataTypes, Model } from 'sequelize';
-import sequelize from '../../../../database/connection';
+import sequelize from '../../../../../database/connection';
 import { InfrastructureInterface } from '../interfaces/infrastructure.interface';
 
 export const InfrastructureModel = sequelize.define<InfrastructureInterface>('InfrastructureModel', {

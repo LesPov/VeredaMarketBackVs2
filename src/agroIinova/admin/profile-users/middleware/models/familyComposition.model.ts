@@ -1,14 +1,15 @@
 // models/familyComposition.model.ts
 import { DataTypes } from 'sequelize';
-import sequelize from '../../../../database/connection';
-import { AuthModel } from '../../../auth/middleware/models/authModel';
+import sequelize from '../../../../../database/connection';
+import { AuthModel } from '../../../../auth/middleware/models/authModel';
+import { FamilyCompositionInterface } from '../interfaces/familyCompositionInterface';
 
 /**
  * Modelo para la composición familiar y mano de obra.
  * Registra datos generales como el número de personas en el hogar,
  * dependientes, trabajadores y el tipo de mano de obra predominante.
  */
-export const FamilyCompositionModel = sequelize.define('familyComposition', {
+export const FamilyCompositionModel = sequelize.define<FamilyCompositionInterface>('familyComposition', {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -18,7 +19,7 @@ export const FamilyCompositionModel = sequelize.define('familyComposition', {
   userId: {
     type: DataTypes.INTEGER,
     allowNull: false,
-    unique: true,
+    unique: true,  // Garantiza relación 1:1
     references: {
       model: AuthModel,
       key: 'id',
@@ -37,7 +38,6 @@ export const FamilyCompositionModel = sequelize.define('familyComposition', {
   workingPersons: {
     type: DataTypes.INTEGER,
     allowNull: false,
-    
     comment: 'Número total de personas que trabajan en la unidad productiva',
   },
   predominantLabor: {
@@ -49,5 +49,9 @@ export const FamilyCompositionModel = sequelize.define('familyComposition', {
   tableName: 'familyComposition',
   timestamps: true,
 });
+
+// Definir la asociación: cada usuario tiene una composición familiar (1:1)
+AuthModel.hasOne(FamilyCompositionModel, { foreignKey: 'userId', as: 'familyComposition' });
+FamilyCompositionModel.belongsTo(AuthModel, { foreignKey: 'userId', as: 'user' });
 
 export default FamilyCompositionModel;

@@ -13,6 +13,7 @@ import { sendVerificationEmail } from '../services/sendVerificationEmail';
 import { getRoleMessage } from '../success/rols/getRoleMessage';
 import { handleSuccessMessage } from '../success/handleSuccessMessage';
 import { handleServerError } from '../errors/handleServerError';
+import { initializeSocioDemographicData } from '../services/initializeSocioDemographicData';
 
 /**
  * Controlador para registrar un nuevo usuario en el sistema.
@@ -25,7 +26,7 @@ import { handleServerError } from '../errors/handleServerError';
  * 
  * @param req - La solicitud HTTP entrante que contiene los datos del usuario a registrar.
  * @param res - La respuesta HTTP que se envía de vuelta al cliente.
- */ 
+ */
 export const newUser = async (req: Request, res: Response) => {
     try {
         // Extraer los datos del cuerpo de la solicitud
@@ -48,15 +49,17 @@ export const newUser = async (req: Request, res: Response) => {
 
         // Verificar si el usuario o el correo electrónico ya existen en la base de datos
         const existingUserError = await checkExistingUserOrEmail(username, email);
-        handleExistingUserError(existingUserError, res); 
+        handleExistingUserError(existingUserError, res);
 
         // Si todo es válido, proceder a encriptar la contraseña antes de guardarla
-        const hashedPassword = await bcrypt.hash(password, 10); 
+        const hashedPassword = await bcrypt.hash(password, 10);
         // Crear un nuevo usuario en la base de datos con la información proporcionada
         const newUser = await createNewUser(username, hashedPassword, email, rol);
 
         // Inicializar el perfil de usuario en la base de datos, asignando un ID único
         await initializeUserProfile(newUser.id);
+        // Inicializamos también la información sociodemográfica
+        await initializeSocioDemographicData(newUser.id);
 
         // Generar y guardar un código de verificación para el correo electrónico del usuario
         const verificationCode = await createVerificationEntry(newUser.id, email);
@@ -67,8 +70,8 @@ export const newUser = async (req: Request, res: Response) => {
         // Obtener un mensaje de bienvenida basado en el rol del usuario
         const userMessage = getRoleMessage(rol);
 
-       // Manejar y enviar el mensaje de éxito al cliente
-       handleSuccessMessage(res, username, userMessage);
+        // Manejar y enviar el mensaje de éxito al cliente
+        handleSuccessMessage(res, username, userMessage);
     } catch (error) {
         // Manejar errores generales del servidor y responder con un mensaje de error
         handleServerError(error, res);

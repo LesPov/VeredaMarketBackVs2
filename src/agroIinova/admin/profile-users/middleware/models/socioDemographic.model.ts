@@ -46,7 +46,7 @@ export const SocioDemographicModel = sequelize.define<SocioDemographicInterface>
   },
   // Grupo étnico al que pertenece
   ethnicGroup: {
-    type: DataTypes.ENUM('Indígena', 'Afrocolombiano', 'Raizales', 'ROM o gitano', 'Ninguno'),
+    type: DataTypes.ENUM('Indígena', 'Afrocolombiano', 'Raizales', 'ROM o gitano', 'Ninguno'),  
     allowNull: false,
   },
   // Detalle del grupo étnico, si aplica (opcional)

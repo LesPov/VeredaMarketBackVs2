@@ -1,5 +1,5 @@
 import { DataTypes } from 'sequelize';
-import sequelize from '../../../../database/connection';
+import sequelize from '../../../../../database/connection';
 import { ProductiveInfoInterface } from '../interfaces/productiveInfo.interface';
 
 export const ProductiveInfoModel = sequelize.define<ProductiveInfoInterface>('ProductiveInfoModel', {

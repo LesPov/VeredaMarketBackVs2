@@ -1,13 +1,16 @@
 // models/familyMember.model.ts
 import { DataTypes } from 'sequelize';
-import sequelize from '../../../../database/connection';
+
+import { FamilyMemberInterface } from '../interfaces/familyMemberInterface';
+import sequelize from '../../../../../database/connection';
+import { AuthModel } from '../../../../auth/middleware/models/authModel';
 
 /**
  * Modelo para la información de miembros familiares.
  * Almacena detalles como relación, género, edad, nivel educativo,
  * grupo étnico, discapacidad y rol en la unidad productiva.
  */
-export const FamilyMemberModel = sequelize.define('familyMember', {
+export const FamilyMemberModel = sequelize.define<FamilyMemberInterface>('familyMember', {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -17,8 +20,9 @@ export const FamilyMemberModel = sequelize.define('familyMember', {
   userId: {
     type: DataTypes.INTEGER,
     allowNull: false,
+    // Referencia a la tabla 'auth'
     references: {
-      model: 'auth',
+      model: AuthModel,
       key: 'id',
     },
   },
@@ -61,5 +65,9 @@ export const FamilyMemberModel = sequelize.define('familyMember', {
   tableName: 'familyMember',
   timestamps: true,
 });
+
+// Asociaciones: Un usuario (AuthModel) puede tener muchos miembros familiares.
+AuthModel.hasMany(FamilyMemberModel, { foreignKey: 'userId', as: 'familyMembers' });
+FamilyMemberModel.belongsTo(AuthModel, { foreignKey: 'userId', as: 'user' });
 
 export default FamilyMemberModel;

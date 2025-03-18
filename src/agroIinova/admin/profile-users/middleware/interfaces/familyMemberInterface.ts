@@ -1,3 +1,4 @@
+// interfaces/familyMemberInterface.ts
 import { Model } from 'sequelize';
 
 export interface FamilyMemberInterface extends Model {
@@ -11,7 +12,6 @@ export interface FamilyMemberInterface extends Model {
   hasDisability: boolean;
   disabilityDetail?: string;  // Opcional, se requiere solo si tiene discapacidad
   roleInProduction?: string;  // Opcional, para describir el rol en la unidad productiva
-  // Timestamps, si aplica
   createdAt?: Date;
   updatedAt?: Date;
 }

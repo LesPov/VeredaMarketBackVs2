@@ -2,14 +2,14 @@ import dotenv from 'dotenv';
 import express, { Application } from 'express';
 import campesinoRouter from '../../routes/campesinoRouter';
 import registerCampesinoRouter from '../../routes/registerCampesinosRouter';
-import FamilyCompositionModel from '../models/familyComposition.model';
-import FamilyMemberModel from '../models/familyMember.model';
-import FarmProfile from '../models/farmProfile.model';
-import InfrastructureModel from '../models/infrastructure.model';
-import MainProductModel from '../models/mainProduct.model';
-import ProductiveInfoModel from '../models/productiveInfo.model';
+import FamilyCompositionModel from '../../../admin/profile-users/middleware/models/familyComposition.model';
+import FamilyMemberModel from '../../../admin/profile-users/middleware/models/familyMember.model';
+import FarmProfile from '../../../admin/profile-users/middleware/models/farmProfile.model';
+import InfrastructureModel from '../../../admin/profile-users/middleware/models/infrastructure.model';
+import MainProductModel from '../../../admin/profile-users/middleware/models/mainProduct.model';
+import ProductiveInfoModel from '../../../admin/profile-users/middleware/models/productiveInfo.model';
 import SocioDemographicModel from '../../../admin/profile-users/middleware/models/socioDemographic.model';
-import TechnologyPracticeModel from '../models/technologyPractice.model';
+import TechnologyPracticeModel from '../../../admin/profile-users/middleware/models/technologyPractice.model';
 
 dotenv.config();
 

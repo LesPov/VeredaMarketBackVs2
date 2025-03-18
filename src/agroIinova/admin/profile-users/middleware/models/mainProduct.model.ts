@@ -1,5 +1,5 @@
 import { DataTypes } from 'sequelize';
-import sequelize from '../../../../database/connection';
+import sequelize from '../../../../../database/connection';
 import { MainProductInterface } from '../interfaces/mainProduct.interface';
 import ProductiveInfoModel from './productiveInfo.model';
 

@@ -9,7 +9,7 @@ export interface SocioDemographicInterface extends Model {
   selfIdentification: 'Campesino(a)' | 'Trabajador(a) rural' | 'Habitante rural' | 'Otro';
   otherIdentification?: string;
   ethnicGroup: 'Indígena' | 'Afrocolombiano' | 'Raizales' | 'ROM o gitano' | 'Ninguno';
-  ethnicGroupDetail?: string;
+  ethnicGroupDetail?: string; 
   hasDisability: boolean;
   disabilityDetail?: string;
   conflictVictim: boolean;
@@ -18,3 +18,4 @@ export interface SocioDemographicInterface extends Model {
   createdAt?: Date;
   updatedAt?: Date;
 }
+ 

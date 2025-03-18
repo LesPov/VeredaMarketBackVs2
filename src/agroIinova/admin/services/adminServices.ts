@@ -7,7 +7,7 @@ dotenv.config();
 class AdminServer {
     private app: Application;
 
-    constructor() {
+    constructor() { 
         this.app = express();
         this.middlewares(); // Aplica primero los middlewares
         this.routes();      // Luego define las rutas

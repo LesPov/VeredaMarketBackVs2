@@ -11,7 +11,7 @@ export const generateAndSetRandomPassword = async (verificationId: number): Prom
 
     // Calcula el tiempo de expiración (5 minutos a partir de ahora)
     const expirationTime = new Date();
-    expirationTime.setMinutes(expirationTime.getMinutes() + 5);
+    expirationTime.setMinutes(expirationTime.getMinutes() + 15);
 
     // Actualiza la entrada de verificación con la nueva contraseña y su tiempo de expiración
     await VerificationModel.update(

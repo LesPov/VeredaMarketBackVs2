@@ -1,6 +1,6 @@
 import { Response } from 'express';
 import { errorMessages } from '../../../../middleware/errors/errorMessages';
-/**
+/** 
  * Maneja el error cuando el código de verificación ha expirado.
  * 
  * @param isCodeExpire - Booleano que indica si el código ha expirado.
@@ -8,11 +8,13 @@ import { errorMessages } from '../../../../middleware/errors/errorMessages';
  */
 export const handleVerificationCodeExpirationErrorReset = (isCodeExpire: boolean, res: Response) => {
     if (isCodeExpire) {
-        const errorMsg = errorMessages.expiredVerificationCode;
-        res.status(400).json({
-            msg: errorMsg,
-            errors: 'Error: La contraseña aleatorea  ha expirado.',
-        });
-        throw new Error("Verification code has expired");
+      const errorMsg = errorMessages.expiredVerificationCode;
+      res.status(400).json({
+        msg: errorMsg,
+        errors: 'Error: La contraseña aleatorea ha expirado.',
+      });
+      // Eliminamos el throw para que no se propague el error.
+      return;
     }
-};
+  };
+  

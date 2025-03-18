@@ -6,7 +6,7 @@ import { updateStatus } from "../controllers/updateStatus";
 
 const adminRouter = Router();
 adminRouter.get('/usersProfile', validateToken, validateRole('admin'), getAllUsersController);
-// adminRouter.get('/admin', validateToken, validateRole('admin'), (req, res) => { res.send('Bienvenido, eres un admin'); });
+ adminRouter.get('/admin', validateToken, validateRole('admin'), (req, res) => { res.send('Bienvenido, eres un admin'); });
 
 export default adminRouter;
 

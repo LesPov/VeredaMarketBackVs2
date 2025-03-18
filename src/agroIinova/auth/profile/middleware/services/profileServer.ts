@@ -17,7 +17,7 @@ class ProfileServer {
     }
 
     routes() {
-        this.app.use('/user/profile', registerPersonalData);
+        this.app.use('/user/profile', registerPersonalData); 
     }
 
     middlewares() {

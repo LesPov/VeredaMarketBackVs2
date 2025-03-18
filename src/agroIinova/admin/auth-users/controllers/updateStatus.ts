@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { AuthModel } from '../../auth/middleware/models/authModel';
+import { AuthModel } from '../../../auth/middleware/models/authModel';
 
 export const updateStatus = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -9,7 +9,7 @@ export const updateStatus = async (req: Request, res: Response): Promise<void> =
       res.status(401).json({ msg: 'No autorizado' });
       return;
     }
-    
+
     // Usa user.userId o user.id, según lo que esté definido
     const userId = user.userId || user.id;
     if (!userId) {

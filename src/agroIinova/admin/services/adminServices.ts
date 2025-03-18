@@ -1,13 +1,14 @@
 import dotenv from 'dotenv';
 import express, { Application } from 'express';
 import adminRouter from '../routes/adminRoute';
+import adminAuthsUsersRouter from '../auth-users/routes/adminAuthsUsersRouter';
 
 dotenv.config();
 
 class AdminServer {
     private app: Application;
 
-    constructor() { 
+    constructor() {
         this.app = express();
         this.middlewares(); // Aplica primero los middlewares
         this.routes();      // Luego define las rutas
@@ -15,7 +16,7 @@ class AdminServer {
     }
 
     routes() {
-        this.app.use('/user/admin', adminRouter );
+        this.app.use('/user/admin', adminRouter, adminAuthsUsersRouter);
     }
 
     middlewares() {
@@ -24,7 +25,7 @@ class AdminServer {
 
     async dbConnect() {
         try {
-     
+
             console.log('Modelos de denuncias sincronizados correctamente.');
         } catch (error) {
             console.error('Error al sincronizar los modelos de denuncias:', error);

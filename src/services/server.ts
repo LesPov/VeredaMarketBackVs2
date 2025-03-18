@@ -22,7 +22,7 @@ import ClientServer from '../agroIinova/clientes/middlewares/services/clientServ
 import ProfileServer from '../agroIinova/auth/profile/middleware/services/profileServer';
 import AdminServer from '../agroIinova/admin/services/adminServices';
 import path from 'path';
-import updateStatusRouter from '../agroIinova/auth/updateStatusRouter';
+import updateStatusRouter from '../agroIinova/auth/profile/routes/updateStatusRouter';
 
 
 // Configurar las variables de entorno del archivo .env

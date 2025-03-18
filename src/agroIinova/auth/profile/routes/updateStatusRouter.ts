@@ -1,7 +1,7 @@
 // updateStatusRouter.ts
 import { Router } from "express";
-import { updateStatus } from "../admin/controllers/updateStatus";
-import validateToken from "./middleware/valdiateToken/validateToken";
+import validateToken from "../../middleware/valdiateToken/validateToken";
+import { updateStatus } from "../../../admin/auth-users/controllers/updateStatus";
 
 
 const updateStatusRouter = Router();

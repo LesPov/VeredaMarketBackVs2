@@ -57,7 +57,7 @@ export const processServerError = (error: any, res: Response) => {
             error,
         });
         throw new Error("Controller updateProfileController error");
-    }
+    } 
 };
 
 export const sendSuccessResponse = (message: string, res: Response): void => {
@@ -177,7 +177,7 @@ export const updateProfileController = async (req: CustomRequest, res: Response)
 
 
             sendSuccessResponse(successMessagesCp.personalDataRegistered, res);
-            return;
+            return; 
         } catch (error: any) {
             processServerError(error, res);
             return;

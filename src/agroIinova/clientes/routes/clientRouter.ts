@@ -1,7 +1,6 @@
 import { Router } from "express";
 import validateToken from "../../auth/middleware/valdiateToken/validateToken";
 import validateRole from "../../auth/middleware/validateRole/validateRole";
-import { updateStatus } from "../../admin/controllers/updateStatus";
 
 const clientRouter = Router();
 /**

@@ -23,7 +23,7 @@ export const SocioDemographicModel = sequelize.define('socioDemographic', {
       key: 'id',
     },
   },
-  // Tiempo de residencia: años y meses
+  // Tiempo de residencia: años y meses 
   residenceYears: {
     type: DataTypes.INTEGER,
     allowNull: false,

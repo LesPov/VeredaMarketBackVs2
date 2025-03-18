@@ -22,7 +22,7 @@ export const registerSocioDemographicData = async (req: CustomRequest, res: Resp
 
     // Verificar si el usuario ya tiene información sociodemográfica registrada
     if (await verifySocioDemographicDataExists(userId, res)) return;
-
+ 
     // Extraer los datos del body
     const {
       residenceYears,

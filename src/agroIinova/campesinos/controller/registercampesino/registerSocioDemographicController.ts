@@ -3,7 +3,7 @@ import { Response } from 'express';
 import { errorMessages } from '../../../auth/middleware/errors/errorMessages';
  
 import { CustomRequest } from '../../../auth/middleware/valdiateToken/validateToken';
-import SocioDemographicModel from '../../middleware/models/socioDemographic.model';
+import SocioDemographicModel from '../../../admin/profile-users/middleware/models/socioDemographic.model';
 import { successMessagesCp } from '../../middleware/succes/succesMessagesCp';
 import { errorMessagesCp } from '../../middleware/errors/errorsMessagesCp';
 

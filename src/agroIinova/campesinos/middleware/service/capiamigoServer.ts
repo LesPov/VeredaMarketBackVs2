@@ -8,7 +8,7 @@ import FarmProfile from '../models/farmProfile.model';
 import InfrastructureModel from '../models/infrastructure.model';
 import MainProductModel from '../models/mainProduct.model';
 import ProductiveInfoModel from '../models/productiveInfo.model';
-import SocioDemographicModel from '../models/socioDemographic.model';
+import SocioDemographicModel from '../../../admin/profile-users/middleware/models/socioDemographic.model';
 import TechnologyPracticeModel from '../models/technologyPractice.model';
 
 dotenv.config();

@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { userProfileModel } from '../../auth/profile/middleware/models/userProfileModel';
+import { userProfileModel } from '../../../auth/profile/middleware/models/userProfileModel';
 
 /**
  * Controlador GET para obtener el perfil de un usuario por su ID.

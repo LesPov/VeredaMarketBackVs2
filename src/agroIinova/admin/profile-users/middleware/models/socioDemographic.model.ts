@@ -1,13 +1,15 @@
 // models/socioDemographic.model.ts
 import { DataTypes } from 'sequelize';
-import sequelize from '../../../../database/connection';
-import { AuthModel } from '../../../auth/middleware/models/authModel';
+import sequelize from '../../../../../database/connection';
+import { AuthModel } from '../../../../auth/middleware/models/authModel';
+import { SocioDemographicInterface } from '../interfaces/socioDemographicInterface';
 
 /**
  * Modelo para la información sociodemográfica del campesino.
  * Representa la tabla "socioDemographic" en la base de datos.
  */
-export const SocioDemographicModel = sequelize.define('socioDemographic', {
+export const SocioDemographicModel = sequelize.define<SocioDemographicInterface>('socioDemographic', {
+
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -76,5 +78,8 @@ export const SocioDemographicModel = sequelize.define('socioDemographic', {
   tableName: 'socioDemographic',
   timestamps: true,
 });
+// Definir las asociaciones entre AuthModel y SocioDemographicModel
+AuthModel.hasOne(SocioDemographicModel, { foreignKey: 'userId' });
+SocioDemographicModel.belongsTo(AuthModel, { foreignKey: 'userId' });
 
 export default SocioDemographicModel;

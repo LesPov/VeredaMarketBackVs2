@@ -3,6 +3,7 @@ import express, { Application } from 'express';
 import adminRouter from '../routes/adminRoute';
 import adminAuthsUsersRouter from '../auth-users/routes/adminAuthsUsersRouter';
 import adminProfileUsersRouter from '../profile-users/routes/profileUseRouter';
+import cors from 'cors';
 
 dotenv.config();
 
@@ -17,11 +18,14 @@ class AdminServer {
     }
 
     routes() {
-        this.app.use('/user/admin', adminRouter, adminAuthsUsersRouter,adminProfileUsersRouter);
+        this.app.use('/user/admin', adminRouter, adminAuthsUsersRouter, adminProfileUsersRouter);
     }
 
     middlewares() {
         this.app.use(express.json());
+        this.app.use(cors({
+        }));
+        this.app.options('*', cors());
     }
 
     async dbConnect() {

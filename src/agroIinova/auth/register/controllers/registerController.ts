@@ -59,7 +59,6 @@ export const newUser = async (req: Request, res: Response) => {
         // Inicializar el perfil de usuario en la base de datos, asignando un ID único
         await initializeUserProfile(newUser.id);
         // Inicializamos también la información sociodemográfica
-        await initializeSocioDemographicData(newUser.id);
 
         // Generar y guardar un código de verificación para el correo electrónico del usuario
         const verificationCode = await createVerificationEntry(newUser.id, email);

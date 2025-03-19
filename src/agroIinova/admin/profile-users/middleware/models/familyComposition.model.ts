@@ -54,4 +54,3 @@ export const FamilyCompositionModel = sequelize.define<FamilyCompositionInterfac
 AuthModel.hasOne(FamilyCompositionModel, { foreignKey: 'userId', as: 'familyComposition' });
 FamilyCompositionModel.belongsTo(AuthModel, { foreignKey: 'userId', as: 'user' });
 
-export default FamilyCompositionModel;

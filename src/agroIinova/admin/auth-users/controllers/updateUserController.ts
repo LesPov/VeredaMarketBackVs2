@@ -4,6 +4,8 @@ import { errorMessages } from '../../../auth/middleware/errors/errorMessages';
 import { AuthModel } from '../../../auth/middleware/models/authModel';
 import { userProfileModel } from '../../../auth/profile/middleware/models/userProfileModel';
 import upload from '../../../auth/profile/utils/uploadConfig';
+import { SocioDemographicModel } from '../../profile-users/middleware/models/socioDemographic.model';
+import { initializeSocioDemographicData } from '../../../auth/register/services/initializeSocioDemographicData';
 
 /**
  * Maneja la subida de imagen utilizando el middleware de upload.
@@ -77,7 +79,17 @@ const getUpdatedUser = async (id: string) => {
     }],
   });
 };
-
+const handleSocioDemographicData = async (userId: number, rol: string): Promise<void> => {
+  if (rol.toLowerCase() === 'campesino') {
+    const socioData = await SocioDemographicModel.findOne({ where: { userId } });
+    if (!socioData) {
+      await initializeSocioDemographicData(userId);
+    }
+  } else {
+    // Si el rol cambia a otro, se elimina la información sociodemográfica (si existe)
+    await SocioDemographicModel.destroy({ where: { userId } });
+  }
+}
 /**
  * Controlador para actualizar los datos del usuario.
  */
@@ -93,13 +105,13 @@ export const updateUserController = async (req: Request, res: Response): Promise
 
       const user = await AuthModel.findByPk(id);
       if (!user) {
-          res.status(404).json({ msg: 'Usuario no encontrado' });
-          return
+        res.status(404).json({ msg: 'Usuario no encontrado' });
+        return
       }
 
       if (!isValidEmail(email)) {
-          res.status(400).json({ msg: 'El email no tiene un formato válido.' });
-          return
+        res.status(400).json({ msg: 'El email no tiene un formato válido.' });
+        return
       }
 
       await checkForDuplicates(id, username, email);
@@ -107,6 +119,8 @@ export const updateUserController = async (req: Request, res: Response): Promise
       await updateAuthUser(id, username, email, rol, phoneNumber);
 
       await updateProfilePicture(id, profilePicture);
+      // Llamada a la función modular para manejar la información sociodemográfica
+      await handleSocioDemographicData(Number(id), rol);
 
       const updatedUser = await getUpdatedUser(id);
       res.status(200).json(updatedUser);

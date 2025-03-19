@@ -1,4 +1,4 @@
-import SocioDemographicModel from "../../../admin/profile-users/middleware/models/socioDemographic.model";
+import { SocioDemographicModel } from "../../../admin/profile-users/middleware/models/socioDemographic.model";
 
 /**
  * Inicializa la información sociodemográfica de un usuario.

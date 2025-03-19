@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import SocioDemographicModel from '../../../profile-users/middleware/models/socioDemographic.model';
+import { SocioDemographicModel } from '../../middleware/models/socioDemographic.model';
 
 /**
  * Controlador GET para obtener la información sociodemográfica de un usuario por su ID.

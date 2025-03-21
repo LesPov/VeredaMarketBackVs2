@@ -7,22 +7,19 @@ import express, { Application } from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import { AuthModel } from '../agroIinova/auth/middleware/models/authModel';
-import { userProfileModel } from '../agroIinova/auth/profile/middleware/models/userProfileModel';
 import { VerificationModel } from '../agroIinova/auth/middleware/models/verificationModel';
 import registerRouter from '../agroIinova/auth/register/routes/registerRouter';
 import emailVerificationRoutes from '../agroIinova/auth/email/routes/emailRoutes';
 import phoneVerificationRouter from '../agroIinova/auth/phone/routers/phoneRoutes';
 import loginUserRouter from '../agroIinova/auth/login/routes/loginRouter';
 import adminRouter from '../agroIinova/admin/routes/adminRoute';
-import clienteRouter from '../agroIinova/clientes/routes/clientRouter';
 import { Country } from '../agroIinova/auth/middleware/models/paisModel';
 import countryPais from '../agroIinova/auth/pais/routes/paisRouter';
-import CampiAmigosServer from '../agroIinova/campesinos/middleware/service/capiamigoServer';
-import ClientServer from '../agroIinova/clientes/middlewares/services/clientServer';
 import ProfileServer from '../agroIinova/auth/profile/middleware/services/profileServer';
-import AdminServer from '../agroIinova/admin/services/adminServices';
 import path from 'path';
-import updateStatusRouter from '../agroIinova/auth/profile/routes/updateStatusRouter';
+import updateStatusRouter from '../agroIinova/admin/auth-users/routes/updateStatusRouter';
+import AdminServer from '../agroIinova/admin/middleware/services/adminServices';
+import UserService from '../agroIinova/user/middleware/services/user.service';
 
 
 // Configurar las variables de entorno del archivo .env
@@ -31,27 +28,23 @@ class Server {
 
     private app: Application;
     private port: string;
-    private campiAmigosServer: CampiAmigosServer;
-    private clientServer: ClientServer;
     private prfileServer: ProfileServer;
     private adminServer: AdminServer;
-
+    private userService: UserService;
 
     /**
      * Constructor de la clase Server.
      */
-    constructor() {
+    constructor() { 
         this.app = express();
-        this.port = process.env.PORT || '2025';
-        this.campiAmigosServer = new CampiAmigosServer();
-        this.clientServer = new ClientServer();
+        this.port = process.env.PORT || '2020';
         this.prfileServer = new ProfileServer();
         this.adminServer = new AdminServer();
+        this.userService = new UserService();
 
-        this.app.use(this.campiAmigosServer.getApp());
-        this.app.use(this.clientServer.getApp());
         this.app.use(this.prfileServer.getApp());
         this.app.use(this.adminServer.getApp());
+        this.app.use(this.userService.getApp());
 
         this.listen();
         this.middlewares();

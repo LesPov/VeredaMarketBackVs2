@@ -15,8 +15,8 @@ export interface AuthInterface extends Model {
   email: string;
   /** Número de teléfono del usuario. */
   phoneNumber?: string;
-  /** Rol del usuario en el sistema (e.g., client, admin, campesino, constructoracivil). */
-  rol: 'client' | 'admin' | 'campesino' | 'constructoracivil';
+  /** Rol del usuario en el sistema (e.g., user, admin, supervisor). */
+  rol: 'user' | 'admin' | 'supervisor';
   /** Estado de verificación o proceso (e.g., pendiente, aprobado, rechazado). */
   status: 'pendiente' | 'aprobado' | 'rechazado';
 }

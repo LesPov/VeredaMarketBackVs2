@@ -2,18 +2,15 @@ import { Router } from "express";
 import validateRole from "../../../auth/middleware/validateRole/validateRole";
 import validateToken from "../../../auth/middleware/valdiateToken/validateToken";
 
+import { updateUserProfileByAdmin } from "../controllers/infoperfil/updateUserProfileByController";
 import { getProfileByIdController } from "../controllers/infoperfil/getProfileByIdController ";
-import { getSociodemograficaController } from "../controllers/sociodemografica/getSociodemofragicaController";
-import { updateSociodemograficaController } from "../controllers/sociodemografica/updateSociodemograficaController";
 
+const adminProfileRouter = Router();
 
+// Ruta para obtener el perfil de un usuario específico
+adminProfileRouter.get('/profiles/:id', validateToken, validateRole('admin'), getProfileByIdController);
 
-const adminProfileUsersRouter = Router();
-adminProfileUsersRouter.get('/profile/:id', validateToken, validateRole('admin'), getProfileByIdController);
-// Ruta para obtener la información sociodemográfica de un usuario por ID
-adminProfileUsersRouter.get('/sociodemographic/:id', validateToken, validateRole('admin'), getSociodemograficaController);
-// Nueva ruta para actualizar la información sociodemográfica
-adminProfileUsersRouter.put('/sociodemographic/:id', validateToken, validateRole('admin'), updateSociodemograficaController);
+// Ruta para actualizar el perfil de un usuario específico
+adminProfileRouter.put('/profile/:id', validateToken, validateRole('admin'), updateUserProfileByAdmin);
 
-export default adminProfileUsersRouter;
-
+export default adminProfileRouter;

@@ -58,9 +58,9 @@ export const AuthModel = sequelize.define<AuthInterface>('auth', {
      * Este campo es opcional y puede ser nulo.
      * Es único para cada usuario si se proporciona.
      */
-    phoneNumber: {
+    phoneNumber: { 
         type: DataTypes.STRING,
-        allowNull: true, // El campo puede ser nulo
+        allowNull: true, // El campo puede ser nulo 
         unique: true,
     },
  
@@ -69,7 +69,7 @@ export const AuthModel = sequelize.define<AuthInterface>('auth', {
      * Este campo es obligatorio y no puede ser nulo.
      */
     rol: {
-        type: DataTypes.ENUM('client', 'admin', 'campesino', 'constructoracivil'),
+        type: DataTypes.ENUM('user', 'admin', 'supervisor'),
         allowNull: false,
     },
 

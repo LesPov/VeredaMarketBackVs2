@@ -2,28 +2,28 @@ import { Router } from "express";
 import validateToken from "../../middleware/valdiateToken/validateToken";
 import validateRole from "../../middleware/validateRole/validateRole";
 import { getProfileController } from "../controller/cosnultar/getprofile";
-import { updateProfileController } from "../controller/register/updateProfileController";
-import { updateMinimalProfileController } from "../controller/register/updateMinimalProfileController ";
+import { updateProfileController } from "../controller/actualizar/updateProfileController";
+import { updateMinimalProfileController } from "../controller/actualizar/updateMinimalProfileController ";
 
 const registerPersonalData = Router();
 
 
 registerPersonalData.put( 
-    '/client/update-profile',
+    '/user/update-profile',
     validateToken,
-    validateRole(['client', 'campesino', 'admin']),
+    validateRole(['user', 'supervisor', 'admin']),
     updateProfileController
 );
 registerPersonalData.put(
-    '/client/update-minimal-profile',
+    '/user/update-minimal-profile',
     validateToken,
-    validateRole('client'),
+    validateRole('user'),
     updateMinimalProfileController
   );
 registerPersonalData.get( 
-    '/client/me',
+    '/user/me',
     validateToken,
-    validateRole(['client', 'campesino', 'admin']),
+    validateRole(['user', 'supervisor', 'admin']),
     getProfileController
 );
 

@@ -13,7 +13,6 @@ import { sendVerificationEmail } from '../services/sendVerificationEmail';
 import { getRoleMessage } from '../success/rols/getRoleMessage';
 import { handleSuccessMessage } from '../success/handleSuccessMessage';
 import { handleServerError } from '../errors/handleServerError';
-import { initializeSocioDemographicData } from '../services/initializeSocioDemographicData';
 
 /**
  * Controlador para registrar un nuevo usuario en el sistema.

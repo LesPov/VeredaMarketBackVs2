@@ -1,6 +1,6 @@
-# VeredaMarket Backend
+# DenunciasBack
 
-A comprehensive Node.js/TypeScript backend service for VeredaMarket, an agricultural e-commerce platform that facilitates connections between farmers and customers.
+A comprehensive Node.js/TypeScript backend service for Denuncias, an agricultural e-commerce platform that facilitates connections between farmers and customers.
 
 ## 🌟 Features
 
@@ -51,8 +51,8 @@ A comprehensive Node.js/TypeScript backend service for VeredaMarket, an agricult
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/veredamarketBack.git
-   cd veredamarketBack
+   git clone https://github.com/yourusername/DenunciasBack.git
+   cd DenunciasBack
    ```
 
 2. Install dependencies:
@@ -92,19 +92,111 @@ A comprehensive Node.js/TypeScript backend service for VeredaMarket, an agricult
 
 ## 📁 Project Structure
 
+The project is organized as follows:
+
 ```
-src/
-├── agroIinova/
-│   ├── admin/         # Admin dashboard functionality
-│   ├── auth/          # Authentication modules
-│   │   ├── chatbot/   # WhatsApp bot integration
-│   │   ├── email/     # Email verification
-│   │   └── login/     # Login and password recovery
-│   └── clientes/      # Client management
-│       └── controllers/
-│           └── registercampesino/
-│               └── registerFamilyCapController.ts # Farm profile registration
-```
+└── 📁src
+    └── 📁agroIinova
+        └── 📁admin
+            └── 📁auth-users
+                └── 📁controllers
+                └── 📁middleware
+                └── 📁routes
+            └── 📁middleware
+            └── 📁profile-users
+                └── 📁controllers
+                └── 📁middleware
+                └── 📁routes
+            └── 📁routes
+        └── 📁auth
+            └── 📁chatbot
+            └── 📁email
+                └── 📁controller
+                └── 📁middleware
+                └── 📁resendCode
+                └── 📁routes
+                └── 📁utils
+            └── 📁emailtemplates
+            └── 📁login
+                └── 📁controller
+                └── 📁passwordRecovery
+                └── 📁resetPassword
+                └── 📁routes
+                └── 📁utils
+            └── 📁middleware
+            └── 📁pais
+            └── 📁phone
+            └── 📁profile
+            └── 📁register
+            └── 📁success
+            └── 📁validations
+        └── 📁user
+            └── 📁controller
+            └── 📁denuncias
+                └── 📁denunciasAnonimas
+                └── 📁denunciasOficiales
+                └── 📁middleware
+                └── 📁subtiposDeDenuncias
+                └── 📁tiposDeDenuncias
+            └── 📁middleware
+    └── 📁database
+    └── 📁services
+    └── index.ts
+
+## ⚙️ Setup and Configuration
+
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd Denuncias
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Environment Variables**
+   - Create a `.env` file in the root directory.
+   - Add the necessary environment variables as shown in `.env.example`.
+
+## 💻 Usage
+
+1. **Start the development server**
+   ```bash
+   npm run dev
+   ```
+
+2. **Access the application**
+   - Open your browser and navigate to `http://localhost:3000`
+
+## 🧪 Testing
+
+- Run tests using the following command:
+  ```bash
+  npm test
+  ```
+
+## 🚀 Deployment
+
+- Ensure all environment variables are set appropriately.
+- Build the application using:
+  ```bash
+  npm run build
+  ```
+- Deploy the contents of the `dist` directory to your server.
+
+## 🤝 Contributing
+
+1. Fork the repository.
+2. Create a new branch (`git checkout -b feature/YourFeature`)
+3. Commit your changes (`git commit -m 'Add some feature'`)
+4. Push to the branch (`git push origin feature/YourFeature`)
+5. Open a Pull Request
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## 🔒 Security Features
 
@@ -114,21 +206,7 @@ src/
 - Email and phone verification to prevent fake accounts
 - Secure password recovery process
 
-## 🤝 Contributing
+## 📝 Acknowledgments
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-## 📝 License
-
-This project is licensed under the ISC License.
-
-## ✨ Acknowledgments
-
-- Thanks to all contributors who have helped shape VeredaMarket
+- Thanks to all contributors who have helped shape Denuncias
 - Special thanks to the open-source community for the amazing tools and libraries
-
-

@@ -23,7 +23,7 @@ class DenunciasService {
     }
 
     routes() {
-        this.app.use('/denuncias',denunciasRouter, denunciasAnonimasRouter,tipoYSubtipoDenunciaRouter );
+        this.app.use('/denuncias',denunciasRouter, denunciasAnonimasRouter,tipoYSubtipoDenunciaRouter, );
     }
 
     middlewares() {

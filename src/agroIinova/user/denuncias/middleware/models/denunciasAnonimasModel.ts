@@ -13,12 +13,16 @@ export interface DenunciaAnonimaInterface extends Model {
   status: 'Pendiente' | 'En Proceso' | 'Cerrada'; // Estado de la denuncia
   tipoDenunciaId: number; // Relación con TipoDenuncia
   subtipoDenunciaId: number; // Relación con SubtipoDenuncia
-  claveUnica: string; // Nueva columna para la clave única
-  pruebas?: string; // Columna opcional para archivos multimedia (imágenes o videos)
-  audio?: string; // Columna opcional para archivos de audio
-  tieneEvidencia: boolean; // Indica si la denuncia tiene pruebas (imágenes, videos o audio)
-  userId?: number; // O el tipo que corresponda, como string
-
+  claveUnica: string; // Clave única de la denuncia
+  pruebas?: string; // Opcional para archivos multimedia
+  audio?: string; // Opcional para archivos de audio
+  tieneEvidencia: boolean; // Indica si tiene evidencias
+  userId?: number; // Relación con el usuario que denuncia
+  // Propiedades de asociación y timestamps:
+  TipoDenuncia?: { id: number; nombre: string };
+  SubtipoDenuncia?: { id: number; nombre: string };
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 // Definición del modelo para Denuncias Anónimas
@@ -32,7 +36,7 @@ export const DenunciaAnonimaModel = sequelize.define<DenunciaAnonimaInterface>('
   descripcion: {
     type: DataTypes.TEXT,
     allowNull: false,
-  },
+  }, 
   direccion: {
     type: DataTypes.STRING,
     allowNull: false,

@@ -35,9 +35,9 @@ class Server {
     /**
      * Constructor de la clase Server.
      */
-    constructor() { 
+    constructor() {
         this.app = express();
-        this.port = process.env.PORT || '2020';
+        this.port = process.env.PORT || '2025';
         this.prfileServer = new ProfileServer();
         this.adminServer = new AdminServer();
         this.userService = new UserService();
@@ -60,12 +60,12 @@ class Server {
         this.app.listen(this.port, () => {
             console.log('Aplicacion corriendo en el puerto ' + this.port);
         })
-    } 
+    }
 
 
     /**
      * Configura las rutas de la aplicación.
-     */ 
+     */
     routes() {
         // Ruta para registrar nuevos usuarios
         this.app.use('/auth/user', registerRouter, emailVerificationRoutes, phoneVerificationRouter, loginUserRouter, adminRouter, countryPais);
@@ -84,7 +84,7 @@ class Server {
         this.app.use('/uploads', express.static(path.join(__dirname, '..', '..', 'uploads'), {
             setHeaders: (res, path) => {
                 console.log(`Accediendo a: ${path}`);  // Aquí se agrega el console.log
-            } 
+            }
         }));
         // Cors
         this.app.use(cors());

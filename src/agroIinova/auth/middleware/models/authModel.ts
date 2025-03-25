@@ -69,7 +69,7 @@ export const AuthModel = sequelize.define<AuthInterface>('auth', {
      * Este campo es obligatorio y no puede ser nulo.
      */
     rol: {
-        type: DataTypes.ENUM('user', 'admin', 'supervisor'),
+        type: DataTypes.ENUM('user', 'admin', 'campesino', 'supervisor'),
         allowNull: false,
     },
 

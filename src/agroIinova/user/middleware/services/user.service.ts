@@ -3,19 +3,15 @@ import express, { Application } from 'express';
 
 import cors from 'cors';
 import userRouter from '../routes/userRouter';
-import DenunciasService from '../../denuncias/middleware/services/denuncias.service';
 
 
 dotenv.config();
  
 class UserService {
     private app: Application;
-    private denunciasService: DenunciasService;
 
     constructor() {
         this.app = express();
-        this.denunciasService = new DenunciasService();
-        this.app.use(this.denunciasService.getApp());
 
         this.middlewares(); // Aplica primero los middlewares
         this.routes();      // Luego define las rutas

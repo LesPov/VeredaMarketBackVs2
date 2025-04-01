@@ -60,7 +60,7 @@ class Server {
         this.app.listen(this.port, () => {
             console.log('Aplicacion corriendo en el puerto ' + this.port);
         })
-    }
+    } 
 
 
     /**

@@ -20,6 +20,7 @@ import path from 'path';
 import updateStatusRouter from '../agroIinova/admin/auth-users/routes/updateStatusRouter';
 import AdminServer from '../agroIinova/admin/middleware/services/adminServices';
 import UserService from '../agroIinova/user/middleware/services/user.service';
+import CampiAmigoService from '../agroIinova/campiamigo/middleware/services/campiamigo.service';
 
 
 // Configurar las variables de entorno del archivo .env
@@ -31,6 +32,7 @@ class Server {
     private prfileServer: ProfileServer;
     private adminServer: AdminServer;
     private userService: UserService;
+    private campiAmigoService: CampiAmigoService;
 
     /**
      * Constructor de la clase Server.
@@ -41,14 +43,16 @@ class Server {
         this.prfileServer = new ProfileServer();
         this.adminServer = new AdminServer();
         this.userService = new UserService();
+        this.campiAmigoService = new CampiAmigoService();
 
         this.app.use(this.prfileServer.getApp());
         this.app.use(this.adminServer.getApp());
         this.app.use(this.userService.getApp());
+        this.app.use(this.campiAmigoService.getApp());
 
         this.listen();
         this.middlewares();
-        this.routes();
+        this.routes(); 
         this.dbConnect();
     }
 
@@ -60,7 +64,7 @@ class Server {
         this.app.listen(this.port, () => {
             console.log('Aplicacion corriendo en el puerto ' + this.port);
         })
-    } 
+    }
 
 
     /**

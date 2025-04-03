@@ -1,7 +1,9 @@
+// models/userProfileModel.ts
 import { DataTypes } from "sequelize";
 import sequelize from "../../../../../database/connection";
 import { AuthModel } from "../../../middleware/models/authModel";
 import { UserProfileinterface } from "../interfaces/userProfileInterface";
+import { ZoneModel } from "../../../../campiamigo/middleware/models/zoneModel";
 
 export const userProfileModel = sequelize.define<UserProfileinterface>('userProfile', {
   id: {
@@ -9,9 +11,9 @@ export const userProfileModel = sequelize.define<UserProfileinterface>('userProf
     primaryKey: true,
     autoIncrement: true,
   },
-  userId: {
+  userId: { 
     type: DataTypes.INTEGER,
-    allowNull: false, 
+    allowNull: false,
     unique: true,
     references: {
       model: 'auth',
@@ -42,14 +44,14 @@ export const userProfileModel = sequelize.define<UserProfileinterface>('userProf
     allowNull: false,
   },
   identificationNumber: {
-    type: DataTypes.STRING, 
+    type: DataTypes.STRING,
     allowNull: true,
   },
   biography: {
     type: DataTypes.TEXT,
     allowNull: true,
-  }, 
-  direccion: { 
+  },
+  direccion: {
     type: DataTypes.TEXT,
     allowNull: true,
   },
@@ -59,21 +61,36 @@ export const userProfileModel = sequelize.define<UserProfileinterface>('userProf
   },
   gender: {
     type: DataTypes.ENUM('Mujer', 'Hombre', 'Otro género', 'Prefiero no declarar'),
-    allowNull: false,  
+    allowNull: false,
   },
   status: {
     type: DataTypes.ENUM('pendiente', 'aprobado', 'rechazado'),
     allowNull: false,
     defaultValue: 'pendiente',
-},
-  // Nueva columna para diferenciar usuarios que aceptan pertenecer a Campiamigo
+  },
   campiamigo: {
     type: DataTypes.BOOLEAN,
     allowNull: false,
     defaultValue: false,
   },
+  // Nueva columna para relacionar el perfil con una zona
+  zoneId: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
+    references: {
+      model: ZoneModel,
+      key: 'id',
+    },
+  },
+}, {
+  tableName: 'userProfile',
+  timestamps: true,
 });
 
-// Relaciones
+// Relación entre Auth y UserProfile
 AuthModel.hasOne(userProfileModel, { foreignKey: 'userId' });
 userProfileModel.belongsTo(AuthModel, { foreignKey: 'userId' });
+
+// Relación entre Zone y UserProfile
+ZoneModel.hasMany(userProfileModel, { foreignKey: 'zoneId' });
+userProfileModel.belongsTo(ZoneModel, { foreignKey: 'zoneId' });

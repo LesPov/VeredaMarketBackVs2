@@ -35,7 +35,7 @@ export const AuthModel = sequelize.define<AuthInterface>('auth', {
     },
 
     /**
-     * Contraseña del usuario.
+     * Contraseña del usuario. 
      * Este campo es obligatorio y no puede ser nulo.
      */
     password: {

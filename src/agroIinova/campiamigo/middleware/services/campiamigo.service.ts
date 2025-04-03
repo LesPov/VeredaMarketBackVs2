@@ -2,14 +2,13 @@ import dotenv from 'dotenv';
 import express, { Application } from 'express';
 
 import cors from 'cors';
-import adminAuthsUsersRouter from '../../auth-users/routes/adminAuthsUsersRouter';
-import adminProfileUsersRouter from '../../profile-users/routes/profileUseRouter';
-import adminRouter from '../../routes/adminRoute';
-import adminZoneRouter from '../../auth-users/routes/adminRegisteruserCA';
+import campiAmigoRouter from '../../routes/campiamigoRouter';
+import { ZoneModel } from '../models/zoneModel';
+
 
 dotenv.config();
- 
-class AdminServer {
+
+class CampiAmigoService {
     private app: Application;
 
     constructor() {
@@ -17,21 +16,22 @@ class AdminServer {
         this.middlewares(); // Aplica primero los middlewares
         this.routes();      // Luego define las rutas
         this.dbConnect();
-    } 
+    }
 
     routes() {
-        this.app.use('/user/admin', adminRouter, adminAuthsUsersRouter, adminProfileUsersRouter,adminZoneRouter);
+        this.app.use('/campiamigo', campiAmigoRouter);
     }
 
     middlewares() {
         this.app.use(express.json());
         this.app.use(cors({
-        })); 
+        }));
         this.app.options('*', cors());
     }
 
     async dbConnect() {
         try {
+            await ZoneModel.sync();
 
             console.log('Modelos  sincronizados correctamente.');
         } catch (error) {
@@ -39,9 +39,9 @@ class AdminServer {
         }
     }
 
-    getApp() { 
+    getApp() {
         return this.app;
     }
 }
 
-export default AdminServer;
+export default CampiAmigoService;

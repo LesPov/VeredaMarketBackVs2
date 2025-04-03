@@ -16,6 +16,6 @@ export interface UserProfileinterface extends Model {
   gender: 'Mujer' | 'Hombre' | 'Otro género' | 'Prefiero no declarar';
   status: 'Activado' | 'Desactivado'
   campiamigo: boolean;
-
+  zoneId: number | null; // Relación opcional con el modelo de zona
   auth?: AuthInterface; // Relación opcional con el modelo de autenticación
 }

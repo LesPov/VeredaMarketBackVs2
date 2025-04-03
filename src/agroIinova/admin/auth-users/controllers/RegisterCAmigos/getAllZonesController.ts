@@ -2,15 +2,20 @@ import { Request, Response } from 'express';
 import { ZoneModel } from '../../../../campiamigo/middleware/models/zoneModel';
 
 /**
- * Controlador para obtener todas las zonas.
- * Consulta la base de datos y retorna un listado con todas las zonas registradas.
+ * Controlador para obtener todas las zonas, opcionalmente filtradas por clima.
  */
 export const getAllZonesController = async (req: Request, res: Response): Promise<void> => {
   try {
-    // Buscar todas las zonas en la base de datos.
-    const zones = await ZoneModel.findAll();
+    // Si se envía el parámetro query 'climate', se utiliza para filtrar
+    const { climate } = req.query;
+    const query: any = {};
+    if (climate) {
+      query.climate = climate;
+    }
 
-    // Retornar la lista de zonas.
+    // Buscar zonas según el filtro (o todas si no se filtra)
+    const zones = await ZoneModel.findAll({ where: query });
+
     res.status(200).json({
       msg: 'Zonas recuperadas correctamente.',
       zones

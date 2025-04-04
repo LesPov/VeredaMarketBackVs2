@@ -11,7 +11,7 @@ export const userProfileModel = sequelize.define<UserProfileinterface>('userProf
     primaryKey: true,
     autoIncrement: true,
   },
-  userId: { 
+  userId: {
     type: DataTypes.INTEGER,
     allowNull: false,
     unique: true,

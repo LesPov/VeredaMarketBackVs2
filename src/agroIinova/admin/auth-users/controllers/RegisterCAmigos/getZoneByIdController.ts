@@ -1,10 +1,10 @@
+// controllers/getZoneByIdController.ts
 import { Request, Response } from 'express';
 import { ZoneModel } from '../../../../campiamigo/middleware/models/zoneModel';
 
 /**
  * Controlador para obtener una zona específica por su ID.
- * Este controlador consulta la base de datos para recuperar la zona
- * correspondiente al ID proporcionado y la envía en la respuesta.
+ * Se consulta la base de datos y se retorna la zona con sus datos completos.
  */
 export const getZoneByIdController = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -12,13 +12,12 @@ export const getZoneByIdController = async (req: Request, res: Response): Promis
 
     // Buscar la zona por su ID.
     const zone = await ZoneModel.findByPk(id);
-
+ 
     // Verificar si la zona existe.
     if (!zone) {
       res.status(404).json({
         msg: 'Zona no encontrada.',
       });
-      return;
     }
 
     // Retornar la zona encontrada.

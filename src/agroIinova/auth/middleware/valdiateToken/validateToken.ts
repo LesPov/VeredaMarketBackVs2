@@ -6,6 +6,7 @@ export interface CustomRequest extends Request {
   user?: { userId: number; rol: string } | null;
 }
 
+
 const extractBearerToken = (headerToken: string | undefined): string | null => {
   if (headerToken && headerToken.startsWith('Bearer ')) {
     return headerToken.slice(7);

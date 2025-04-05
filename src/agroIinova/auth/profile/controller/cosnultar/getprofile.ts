@@ -6,7 +6,7 @@ import { CustomRequest } from '../../../middleware/valdiateToken/validateToken';
 export const getProfileController = async (req: CustomRequest, res: Response): Promise<void> => {
   try {
     // Extraemos el userId del token (ya validado por el middleware)
-    const userId = req.user ? req.user.userId : null;
+    const userId = req.user ? req.user.userId : null; 
     if (!userId) {
       res.status(401).json({ msg: 'Usuario no autenticado' }); 
       return;

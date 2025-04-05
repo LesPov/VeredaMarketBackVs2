@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { userProfileModel } from '../../../../auth/profile/middleware/models/userProfileModel';
 import { ZoneModel } from '../../../../campiamigo/middleware/models/zoneModel';
+import { IndicatorModel } from '../../../../campiamigo/middleware/models/indicador';
 import uploadZone from './utils/uploadZoneConfig';
 
 /**
@@ -20,14 +21,13 @@ const handleZoneImageUpload = (req: Request, res: Response, callback: () => Prom
 };
 
 export const createZoneController = async (req: Request, res: Response): Promise<void> => {
-  // Si necesitas forzar algún campo, lo puedes dejar
+  // Forzamos algún campo si es necesario
   req.body.zonasactualizar = 'zonasactualizar';
-  console.log("Contenido de req.body antes de subir archivos:", req.body);
 
   try {
-    // Extraer el id del usuario de los parámetros
+    // Extraer el id del usuario (perfil) de los parámetros
     const { id } = req.params;
-    // Buscar el perfil del usuario por su id
+    // Buscar el perfil del usuario
     const userProfile = await userProfileModel.findOne({ where: { id } });
     if (!userProfile) {
       res.status(404).json({ msg: 'Perfil de usuario no encontrado.' });
@@ -40,13 +40,10 @@ export const createZoneController = async (req: Request, res: Response): Promise
       return;
     }
 
-    // Manejar la subida de imágenes para la zona y luego proceder con la lógica
+    // Manejar la subida de imágenes y proceder con la lógica de zona
     handleZoneImageUpload(req, res, async (): Promise<void> => {
-      // Extraer los datos de la zona *después* de que Multer procese la solicitud
+      // Extraer los datos de la zona (después de procesar archivos)
       const { name, tipoZona, description, climate, departamentoName } = req.body;
-      console.log("Campos de texto recibidos:", { name, tipoZona, description, climate, departamentoName });
-      
-      // Acceder a los archivos subidos
       const files = req.files as { [fieldname: string]: Express.Multer.File[] };
       const cityImage = files && files.cityImage ? files.cityImage[0].filename : undefined;
       const zoneImage = files && files.zoneImage ? files.zoneImage[0].filename : undefined;
@@ -66,7 +63,7 @@ export const createZoneController = async (req: Request, res: Response): Promise
             zoneImage
           });
         } else {
-          // Caso atípico: existe un zoneId en el perfil pero la zona no se encuentra
+          // Caso atípico: el perfil tiene un zoneId pero no se encuentra la zona
           zone = await ZoneModel.create({
             name,
             tipoZona,
@@ -79,7 +76,7 @@ export const createZoneController = async (req: Request, res: Response): Promise
           await userProfileModel.update({ zoneId: zone.id }, { where: { id } });
         }
       } else {
-        // Si no existe zona asignada, se crea una nueva y se actualiza el perfil
+        // Si no existe zona asignada, se crea y se actualiza el perfil
         zone = await ZoneModel.create({
           name,
           tipoZona,
@@ -92,7 +89,17 @@ export const createZoneController = async (req: Request, res: Response): Promise
         await userProfileModel.update({ zoneId: zone.id }, { where: { id } });
       }
 
-      // Responder con la información de la zona creada/actualizada
+      // Crear el indicador si aún no existe para el usuario
+      const existingIndicator = await IndicatorModel.findOne({ where: { userId: userProfile.id } });
+      if (!existingIndicator) {
+        await IndicatorModel.create({
+          zoneId: zone.id,
+          userId: userProfile.id,
+          color: 'white'
+        });
+      }
+
+      // Responder con la información de la zona actualizada/creada
       res.status(200).json({
         msg: 'Zona actualizada correctamente.',
         zone,

@@ -4,6 +4,7 @@ import express, { Application } from 'express';
 import cors from 'cors';
 import campiAmigoRouter from '../../routes/campiamigoRouter';
 import { ZoneModel } from '../models/zoneModel';
+import { IndicatorModel } from '../models/indicador';
 
 
 dotenv.config();
@@ -32,6 +33,7 @@ class CampiAmigoService {
     async dbConnect() {
         try {
             await ZoneModel.sync();
+            await IndicatorModel.sync();
 
             console.log('Modelos  sincronizados correctamente.');
         } catch (error) {

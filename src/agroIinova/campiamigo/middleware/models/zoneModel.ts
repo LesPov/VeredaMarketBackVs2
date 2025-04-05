@@ -27,6 +27,7 @@ export const ZoneModel = sequelize.define<ZoneInterface>('zone', {
     primaryKey: true,
     autoIncrement: true,
   },
+  
   name: {
     type: DataTypes.STRING,
     allowNull: false,

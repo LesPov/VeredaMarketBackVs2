@@ -8,7 +8,7 @@ import adminRouter from '../../routes/adminRoute';
 import adminZoneRouter from '../../auth-users/routes/adminRegisteruserCA';
 
 dotenv.config();
- 
+
 class AdminServer {
     private app: Application;
 
@@ -17,16 +17,16 @@ class AdminServer {
         this.middlewares(); // Aplica primero los middlewares
         this.routes();      // Luego define las rutas
         this.dbConnect();
-    } 
+    }
 
     routes() {
-        this.app.use('/user/admin', adminRouter, adminAuthsUsersRouter, adminProfileUsersRouter,adminZoneRouter);
+        this.app.use('/user/admin', adminRouter, adminAuthsUsersRouter, adminProfileUsersRouter, adminZoneRouter);
     }
 
     middlewares() {
         this.app.use(express.json());
         this.app.use(cors({
-        })); 
+        }));
         this.app.options('*', cors());
     }
 
@@ -39,7 +39,7 @@ class AdminServer {
         }
     }
 
-    getApp() { 
+    getApp() {
         return this.app;
     }
 }

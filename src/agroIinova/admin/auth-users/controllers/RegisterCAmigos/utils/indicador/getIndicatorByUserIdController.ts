@@ -1,4 +1,3 @@
-// src/campiamigo/middleware/controllers/RegisterCAmigos/utils/indicador/getIndicatorByUserIdController.ts
 import { Request, Response } from 'express';
 import { IndicatorModel } from '../../../../../../campiamigo/middleware/models/indicador';
 import { ZoneModel } from '../../../../../../campiamigo/middleware/models/zoneModel';
@@ -9,9 +8,11 @@ export const getIndicatorByUserIdController = async (req: Request, res: Response
     const { id } = req.params;
     const indicator = await IndicatorModel.findOne({
       where: { userId: id },
+      // Especificamos los atributos que queremos obtener, incluidos x, y y z
+      attributes: ['id', 'zoneId', 'userId', 'updatedBy', 'color', 'x', 'y', 'z', 'createdAt', 'updatedAt'],
       include: [
-        { model: ZoneModel,       attributes: ['id','name','tipoZona','zoneImage'] },
-        { model: userProfileModel,attributes: ['id','firstName','lastName'] }
+        { model: ZoneModel, attributes: ['id', 'name', 'tipoZona', 'zoneImage'] },
+        { model: userProfileModel, attributes: ['id', 'firstName', 'lastName'] }
       ]
     });
     if (!indicator) {

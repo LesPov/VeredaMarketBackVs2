@@ -7,6 +7,7 @@ import { getZoneByIdController } from '../controllers/RegisterCAmigos/getZoneByI
 import { getAllZonesController } from '../controllers/RegisterCAmigos/getAllZonesController';
 import { updateIndicatorColor } from '../controllers/RegisterCAmigos/utils/indicador/indicatorController';
 import { getIndicatorByUserIdController } from '../controllers/RegisterCAmigos/utils/indicador/getIndicatorByUserIdController';
+import { updateIndicatorPosition } from '../controllers/RegisterCAmigos/utils/indicador/indicatorPositionController';
 
 const adminZoneRouter = Router();
 
@@ -27,4 +28,11 @@ adminZoneRouter.get(
     validateRole(['admin', 'supervisor', 'user']),
     getIndicatorByUserIdController
   );
+  // En routes/adminZoneRouter.ts
+adminZoneRouter.put(
+    '/zones/indicator-position/:id',
+    validateToken, validateRole('admin'),
+    updateIndicatorPosition
+  );
+  
 export default adminZoneRouter;

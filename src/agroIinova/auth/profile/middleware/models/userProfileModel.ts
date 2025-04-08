@@ -13,7 +13,7 @@ export const userProfileModel = sequelize.define<UserProfileinterface>('userProf
   },
   userId: {
     type: DataTypes.INTEGER,
-    allowNull: false,
+    allowNull: false, 
     unique: true,
     references: {
       model: 'auth',

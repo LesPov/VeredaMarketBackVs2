@@ -1,16 +1,16 @@
 import { Request, Response } from 'express';
 import { Op } from 'sequelize';
-import { ZoneModel } from '../../../../campiamigo/middleware/models/zoneModel';
-import { userProfileModel } from '../../../../auth/profile/middleware/models/userProfileModel';
+import { ZoneModel } from '../../../../../../campiamigo/middleware/models/zoneModel';
+import { userProfileModel } from '../../../../../../auth/profile/middleware/models/userProfileModel';
 
 export const getAllZonesController = async (req: Request, res: Response): Promise<void> => {
   try {
     const { climate, departamentoName, tipoZona, description } = req.query;
     const where: any = {};
-    if (climate)        where.climate        = climate;
+    if (climate) where.climate = climate;
     if (departamentoName) where.departamentoName = departamentoName;
-    if (tipoZona)       where.tipoZona       = tipoZona;
-    if (description)    where.description    = { [Op.like]: `%${description}%` };
+    if (tipoZona) where.tipoZona = tipoZona; 
+    if (description) where.description = { [Op.like]: `%${description}%` };
 
     const zones = await ZoneModel.findAll({
       where,

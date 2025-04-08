@@ -8,7 +8,7 @@ import sequelize from "../../../../database/connection";
 export interface ZoneInterface extends Model {
   id?: number;
   name: string;            // Nombre del pueblo, municipio o zona
-  departamentoName?: string;       // Nombre de la ciudad (opcional)
+  departamentoName?: string;       // Nombre del departamento o ciudad (opcional)
   cityImage?: string;      // URL o path de la imagen de la ciudad (opcional)
   zoneImage?: string;      // URL o path de la imagen representativa de la zona (opcional)
   tipoZona: 'municipio' | 'departamento' | 'vereda' | 'ciudad';
@@ -19,7 +19,6 @@ export interface ZoneInterface extends Model {
 /**
  * Modelo de Zona.
  * Representa la tabla "zone" donde se almacena la información territorial.
- * Se agregaron los campos adicionales con la finalidad de brindar una información más completa y visual.
  */
 export const ZoneModel = sequelize.define<ZoneInterface>('zone', {
   id: {
@@ -27,15 +26,18 @@ export const ZoneModel = sequelize.define<ZoneInterface>('zone', {
     primaryKey: true,
     autoIncrement: true,
   },
-  
   name: {
     type: DataTypes.STRING,
     allowNull: false,
+    // Se define el índice único compartido
+    unique: 'unique_zone_departamento'
   },
   departamentoName: {
     type: DataTypes.STRING,
     allowNull: true,
-    comment: 'Nombre de la ciudad relacionado con la zona'
+    comment: 'Nombre del departamento o ciudad relacionado con la zona',
+    // Único en combinación con el campo "name"
+    unique: 'unique_zone_departamento'
   },
   cityImage: {
     type: DataTypes.STRING,

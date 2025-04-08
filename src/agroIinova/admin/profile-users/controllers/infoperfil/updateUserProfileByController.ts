@@ -3,6 +3,7 @@ import { Op } from 'sequelize';
 import { successMessagesCp } from '../../../auth-users/middleware/succes/succesMessagesCp';
 import { errorMessages } from '../../../../auth/middleware/errors/errorMessages';
 import { userProfileModel } from '../../../../auth/profile/middleware/models/userProfileModel';
+import { IndicatorModel } from '../../../../campiamigo/middleware/models/indicador';
 
 /**
  * Función de validación de datos requeridos para el perfil.
@@ -27,6 +28,9 @@ const validateProfileData = (
 /**
  * Controlador PUT para que el admin actualice el perfil de un usuario específico.
  * Recibe el id del usuario a actualizar en req.params.id y los datos en el body.
+ *
+ * Si el campo campiamigo cambia a false, se elimina la zona asignada al usuario
+ * (se pone zoneId en null) y se borra el indicador asociado.
  */
 export const updateUserProfileByAdmin = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -56,7 +60,7 @@ export const updateUserProfileByAdmin = async (req: Request, res: Response): Pro
       return;
     }
 
-    // Verificar duplicados: Si se envía un número de identificación, verificar que no esté usado por otro usuario
+    // Verificar duplicados para el número de identificación
     if (identificationNumber) {
       const duplicateIdentification = await userProfileModel.findOne({
         where: {
@@ -91,6 +95,7 @@ export const updateUserProfileByAdmin = async (req: Request, res: Response): Pro
     };
 
     if (campiamigo !== undefined) {
+      // Convertir a booleano (considera que puede venir como cadena "true" o "false")
       updateData.campiamigo = campiamigo === true || campiamigo === 'true';
     }
     if (identificationNumber) {
@@ -100,8 +105,19 @@ export const updateUserProfileByAdmin = async (req: Request, res: Response): Pro
       updateData.identificationType = identificationType;
     }
 
+    // Si campiamigo es false, se elimina la zona asignada (zoneId se pone en null)
+    if (updateData.campiamigo === false) {
+      updateData.zoneId = null;
+    }
+
     // Actualizar el perfil existente
     await existingProfile.update(updateData);
+
+    // Si campiamigo fue actualizado a false, eliminar cualquier indicador asociado al usuario
+    if (updateData.campiamigo === false) {
+      await IndicatorModel.destroy({ where: { userId } });
+    }
+
     res.status(200).json({ msg: successMessagesCp.personalDataRegistered || 'Perfil actualizado correctamente.' });
   } catch (error: any) {
     console.error('Error en updateUserProfileByAdmin:', error);

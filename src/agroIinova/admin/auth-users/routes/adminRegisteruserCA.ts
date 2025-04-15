@@ -1,4 +1,3 @@
-// routes/adminZoneRouter.ts
 import { Router } from 'express';
 import validateRole from '../../../auth/middleware/validateRole/validateRole';
 import validateToken from '../../../auth/middleware/valdiateToken/validateToken';
@@ -13,32 +12,16 @@ import { deleteZoneController } from '../controllers/RegisterCAmigos/utils/zone/
 
 const adminZoneRouter = Router();
 
-// Ruta para crear una zona 
-
+// Ruta para crear una zona
 adminZoneRouter.post('/zones', validateToken, validateRole('admin'), createZoneController);
 
-adminZoneRouter.get('/zone/:id', validateToken, validateRole('admin'), getZoneByIdController);
-adminZoneRouter.get('/zone', validateToken, validateRole(['user', 'supervisor', 'admin']),
-  getAllZonesController);
-adminZoneRouter.put(
-  '/zones/indicator-colors/:id',
-  validateToken, validateRole('admin'),
-  updateIndicatorColor
-);
-adminZoneRouter.get(
-  '/zones/indicator/:id',
-  validateToken,
-  validateRole(['admin', 'supervisor', 'user']),
-  getIndicatorByUserIdController
-);
-// En routes/adminZoneRouter.ts
-adminZoneRouter.put(
-  '/zones/indicator-position/:id',
-  validateToken, validateRole('admin'),
-  updateIndicatorPosition
-);
+// Rutas adicionales de zona (consulta, actualización, eliminación)
+adminZoneRouter.get('/zone/:id', validateToken, validateRole(['user', 'supervisor', 'admin']), getZoneByIdController);
+adminZoneRouter.get('/zone', validateToken, validateRole(['user', 'supervisor', 'admin']), getAllZonesController);
+adminZoneRouter.put('/zones/indicator-colors/:id', validateToken, validateRole('admin'), updateIndicatorColor);
+adminZoneRouter.get('/zones/indicator/:id', validateToken, validateRole(['admin', 'supervisor', 'user']), getIndicatorByUserIdController);
+adminZoneRouter.put('/zones/indicator-position/:id', validateToken, validateRole('admin'), updateIndicatorPosition);
 adminZoneRouter.put('/user/:id/zone', validateToken, validateRole('admin'), selectExistingZoneController);
-// Ruta para eliminar una zona por su ID
 adminZoneRouter.delete('/zones/:id', validateToken, validateRole('admin'), deleteZoneController);
 
 export default adminZoneRouter;

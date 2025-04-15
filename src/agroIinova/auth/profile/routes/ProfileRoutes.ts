@@ -8,7 +8,7 @@ import { updateMinimalProfileController } from "../controller/actualizar/updateM
 const registerPersonalData = Router();
 
 
-registerPersonalData.put( 
+registerPersonalData.put(
     '/user/update-profile',
     validateToken,
     validateRole(['user', 'supervisor', 'admin']),
@@ -19,14 +19,13 @@ registerPersonalData.put(
     validateToken,
     validateRole('user'),
     updateMinimalProfileController
-  );
-registerPersonalData.get( 
+);
+registerPersonalData.get(
     '/user/me',
     validateToken,
     validateRole(['user', 'supervisor', 'admin']),
     getProfileController
 );
 
-export default registerPersonalData; 
+export default registerPersonalData;
 
- 

@@ -14,11 +14,17 @@ export interface ZoneInterface extends Model {
   tipoZona: 'municipio' | 'departamento' | 'vereda' | 'ciudad';
   description?: string;
   climate?: 'frio' | 'calido';
+
+  // Nuevos campos para los activos
+  video?: string;          // Ruta o URL del video asociado a la zona
+  modelPath?: string;      // Ruta o URL del modelo 3D (terreno) de la zona
+  titleGlb?: string;       // Ruta o URL del archivo .glb para el título u otro asset 3D
 }
+
 
 /**
  * Modelo de Zona.
- * Representa la tabla "zone" donde se almacena la información territorial.
+ * Representa la tabla "zone" donde se almacena la información territorial. 
  */
 export const ZoneModel = sequelize.define<ZoneInterface>('zone', {
   id: {
@@ -29,14 +35,12 @@ export const ZoneModel = sequelize.define<ZoneInterface>('zone', {
   name: {
     type: DataTypes.STRING,
     allowNull: false,
-    // Se define el índice único compartido
     unique: 'unique_zone_departamento'
   },
   departamentoName: {
     type: DataTypes.STRING,
     allowNull: true,
     comment: 'Nombre del departamento o ciudad relacionado con la zona',
-    // Único en combinación con el campo "name"
     unique: 'unique_zone_departamento'
   },
   cityImage: {
@@ -61,6 +65,22 @@ export const ZoneModel = sequelize.define<ZoneInterface>('zone', {
     type: DataTypes.ENUM('frio', 'calido'),
     allowNull: true,
   },
+  // Nuevos campos para los activos
+  video: {
+    type: DataTypes.STRING,
+    allowNull: true,
+    comment: 'Ruta o URL del video asociado a la zona'
+  },
+  modelPath: {
+    type: DataTypes.STRING,
+    allowNull: true,
+    comment: 'Ruta o URL del modelo 3D (terreno) asociado a la zona'
+  },
+  titleGlb: {
+    type: DataTypes.STRING,
+    allowNull: true,
+    comment: 'Ruta o URL del archivo .glb para el título u otro asset 3D'
+  }
 }, {
   tableName: 'zone',
   timestamps: true,

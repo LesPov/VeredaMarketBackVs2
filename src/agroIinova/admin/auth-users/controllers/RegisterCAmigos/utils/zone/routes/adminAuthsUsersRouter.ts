@@ -1,8 +1,8 @@
 import { Router } from "express";
-import validateRole from "../../../auth/middleware/validateRole/validateRole";
-import validateToken from "../../../auth/middleware/valdiateToken/validateToken";
-import { getAllUsersController } from "../controllers/getAllUsersController";
-import { updateUserController } from "../controllers/updateUserController";
+import validateToken from "../../../../../../../auth/middleware/valdiateToken/validateToken";
+import validateRole from "../../../../../../../auth/middleware/validateRole/validateRole";
+import { getAllUsersController } from "../../../../getAllUsersController";
+import { updateUserController } from "../../../../updateUserController";
 
 const adminAccountRouter = Router();
 

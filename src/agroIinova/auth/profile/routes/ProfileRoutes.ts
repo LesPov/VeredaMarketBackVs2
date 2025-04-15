@@ -11,7 +11,7 @@ const registerPersonalData = Router();
 registerPersonalData.put(
     '/user/update-profile',
     validateToken,
-    validateRole(['user', 'supervisor', 'admin']),
+    validateRole(['user', 'campesino', 'supervisor', 'admin']),
     updateProfileController
 );
 registerPersonalData.put(
@@ -23,7 +23,7 @@ registerPersonalData.put(
 registerPersonalData.get(
     '/user/me',
     validateToken,
-    validateRole(['user', 'supervisor', 'admin']),
+    validateRole(['user', 'campesino', 'supervisor', 'admin']),
     getProfileController
 );
 

@@ -16,12 +16,16 @@ const adminZoneRouter = Router();
 adminZoneRouter.post('/zones', validateToken, validateRole('admin'), createZoneController);
 
 // Rutas adicionales de zona (consulta, actualización, eliminación)
-adminZoneRouter.get('/zone/:id', validateToken, validateRole(['user', 'supervisor', 'admin']), getZoneByIdController);
 adminZoneRouter.get('/zone', validateToken, validateRole(['user', 'supervisor', 'admin']), getAllZonesController);
+
+adminZoneRouter.get('/zone/:id', validateToken, validateRole(['user', 'supervisor', 'admin']), getZoneByIdController);
+
 adminZoneRouter.put('/zones/indicator-colors/:id', validateToken, validateRole('admin'), updateIndicatorColor);
 adminZoneRouter.get('/zones/indicator/:id', validateToken, validateRole(['admin', 'supervisor', 'user']), getIndicatorByUserIdController);
 adminZoneRouter.put('/zones/indicator-position/:id', validateToken, validateRole('admin'), updateIndicatorPosition);
+
 adminZoneRouter.put('/user/:id/zone', validateToken, validateRole('admin'), selectExistingZoneController);
+
 adminZoneRouter.delete('/zones/:id', validateToken, validateRole('admin'), deleteZoneController);
 
 export default adminZoneRouter;

@@ -1,10 +1,10 @@
 import dotenv from 'dotenv';
 import express, { Application, Request, Response, NextFunction } from 'express';
 import cors from 'cors';
-import adminAuthsUsersRouter from '../../auth-users/routes/adminAuthsUsersRouter';
 import adminProfileUsersRouter from '../../profile-users/routes/profileUseRouter';
 import adminRouter from '../../routes/adminRoute';
-import adminZoneRouter from '../../auth-users/routes/adminRegisteruserCA';
+import adminZoneRouter from '../../auth-users/routes/adminRegisteruser';
+import adminAuthsUsersRouter from '../../auth-users/controllers/RegisterCAmigos/utils/zone/routes/adminAuthsUsersRouter';
 
 dotenv.config();
 

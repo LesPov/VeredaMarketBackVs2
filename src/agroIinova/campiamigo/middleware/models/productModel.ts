@@ -91,5 +91,5 @@ export const ProductModel = sequelize.define<ProductInterface>('product', {
  * Establecer la relación entre AuthModel y ProductModel. 
  * Un usuario (campesino/campiamigo) puede tener muchos productos.
  */
-AuthModel.hasMany(ProductModel, { foreignKey: 'userId' });
+AuthModel.hasMany(ProductModel, { foreignKey: 'userId', as: 'products' });
 ProductModel.belongsTo(AuthModel, { foreignKey: 'userId' });

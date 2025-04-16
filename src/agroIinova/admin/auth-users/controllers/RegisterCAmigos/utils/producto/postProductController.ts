@@ -1,4 +1,3 @@
-// controllers/postProductController.ts
 import { Request, Response } from 'express';
 import uploadAssets from './uploadAssetsConfig';
 import { ProductModel } from '../../../../../../campiamigo/middleware/models/productModel';
@@ -62,8 +61,21 @@ export const createProductController = async (req: Request, res: Response): Prom
       });
     } catch (error: any) {
       console.error("Error en createProductController:", error);
+
+      // Lógica para personalizar el mensaje del error
+      let errorMsg = 'Error al crear el producto.';
+      
+      // Si es un error de precio fuera de rango:
+      if (error.parent && error.parent.sqlMessage && error.parent.sqlMessage.includes("Out of range value for column 'price'")) {
+        errorMsg = 'El valor ingresado para el precio es demasiado alto. Verifica que no exceda el límite permitido.';
+      }
+      // Si es un error de restricción única (producto duplicado para el mismo usuario):
+      else if (error.name === 'SequelizeUniqueConstraintError') {
+        errorMsg = 'El producto ya existe para este usuario. Por favor, utiliza otro nombre.';
+      }
+
       res.status(500).json({
-        msg: 'Error al crear el producto.',
+        msg: errorMsg,
         error: error.message
       });
     }

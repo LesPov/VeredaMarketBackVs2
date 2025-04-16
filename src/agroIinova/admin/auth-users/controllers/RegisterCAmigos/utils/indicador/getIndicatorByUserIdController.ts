@@ -1,30 +1,28 @@
-// getIndicatorByUserIdController.ts
 import { Request, Response } from 'express';
-import { IndicatorModel } from '../../../../../../campiamigo/middleware/models/indicador';
-import { ZoneModel } from '../../../../../../campiamigo/middleware/models/zoneModel';
-import { userProfileModel } from '../../../../../../auth/profile/middleware/models/userProfileModel';
 import { AuthModel } from '../../../../../../auth/middleware/models/authModel';
+import { userProfileModel } from '../../../../../../auth/profile/middleware/models/userProfileModel';
+import { IndicatorModel } from '../../../../../../campiamigo/middleware/models/indicador';
 import { ProductModel } from '../../../../../../campiamigo/middleware/models/productModel';
+import { ZoneModel } from '../../../../../../campiamigo/middleware/models/zoneModel';
 
 export const getIndicatorByUserIdController = async (req: Request, res: Response): Promise<void> => {
   try {
+    // El id que se recibe debe ser el userProfile.id
     const { id } = req.params;
 
     const indicator = await IndicatorModel.findOne({
-      where: { userId: id },
+      where: { userId: id },  // userId de 'indicator' es el userProfile.id
       attributes: ['id', 'zoneId', 'userId', 'updatedBy', 'color', 'x', 'y', 'z', 'createdAt', 'updatedAt'],
       include: [
-        // Información de la zona asociada
         {
           model: ZoneModel,
-          attributes: ['id', 'name', 'tipoZona', 'zoneImage']
+          attributes: ['id', 'name', 'tipoZona', 'zoneImage'] 
         },
-        // Perfil completo del usuario
         {
           model: userProfileModel,
           attributes: [
             'id',
-            'userId',
+            'userId', // Este campo almacena el auth.id
             'profilePicture',
             'firstName',
             'lastName',
@@ -41,14 +39,13 @@ export const getIndicatorByUserIdController = async (req: Request, res: Response
             'updatedAt'
           ],
           include: [
-            // Desde el perfil se incluye el usuario (Auth)
             {
               model: AuthModel,
               attributes: ['id', 'email', 'phoneNumber'],
               include: [
                 {
                   model: ProductModel,
-                  as: 'products', // usamos el alias definido
+                  as: 'products', // Alias definido en la relación
                   attributes: ['id', 'name', 'description', 'price', 'image', 'glbFile', 'video']
                 }
               ]
@@ -59,7 +56,7 @@ export const getIndicatorByUserIdController = async (req: Request, res: Response
     });
 
     if (!indicator) {
-      res.status(404).json({ msg: 'No se encontró un indicador para este usuario.' });
+      res.status(404).json({ msg: 'No se encontró un indicador para este userProfile.id.' });
       return;
     }
 

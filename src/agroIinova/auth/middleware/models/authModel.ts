@@ -81,7 +81,7 @@ export const AuthModel = sequelize.define<AuthInterface>('auth', {
         type: DataTypes.ENUM('Activado', 'Desactivado'),
         allowNull: false,
         defaultValue: 'Activado',
-    },
+    }, 
 }, {
     tableName: 'auth',
     timestamps: true, // No agregamos las columnas createdAt y updatedAt

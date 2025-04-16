@@ -16,74 +16,62 @@ export interface IndicatorInterface extends Model {
   createdAt?: Date; 
   updatedAt?: Date;
 }
-
-export const IndicatorModel = sequelize.define<IndicatorInterface>(
-  'indicator',
-  {
-    id: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      autoIncrement: true
-    },
-    zoneId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: ZoneModel,
-        key: 'id'
-      }
-    },
-    userId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: userProfileModel,
-        key: 'id'
-      }
-    },
-    updatedBy: {
-      type: DataTypes.INTEGER,
-      allowNull: true
-      // Puedes agregar referencias a userProfileModel si deseas llevar un control de quién realiza la última modificación.
-    },
-    color: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      defaultValue: 'white'
-    },
-    x: {
-        type: DataTypes.FLOAT,
-        allowNull: false,
-        defaultValue: 0
-      },
-      y: {
-        type: DataTypes.FLOAT,
-        allowNull: false,
-        defaultValue: 0
-      },
-      z: {
-        type: DataTypes.FLOAT,
-        allowNull: false,
-        defaultValue: 0
-      }
-      
+export const IndicatorModel = sequelize.define('indicator', {
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
   },
-  
-  {
-    tableName: 'indicator',
-    timestamps: true,
-    indexes: [
-      {
-        unique: true,
-        fields: ['userId']
-      }
-    ]
+  zoneId: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    references: {
+      model: ZoneModel,
+      key: 'id'
+    }
+  },
+  // OJO: En este caso userId apunta a userProfile.id
+  userId: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    references: {
+      model: userProfileModel,
+      key: 'id'
+    }
+  },
+  updatedBy: {
+    type: DataTypes.INTEGER,
+    allowNull: true
+  },
+  color: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    defaultValue: 'white'
+  },
+  x: {
+    type: DataTypes.FLOAT,
+    allowNull: false,
+    defaultValue: 0
+  },
+  y: {
+    type: DataTypes.FLOAT,
+    allowNull: false,
+    defaultValue: 0
+  },
+  z: {
+    type: DataTypes.FLOAT,
+    allowNull: false,
+    defaultValue: 0
   }
-);
+}, {
+  tableName: 'indicator',
+  timestamps: true,
+});
 
 // Relaciones
 ZoneModel.hasMany(IndicatorModel, { foreignKey: 'zoneId' });
 IndicatorModel.belongsTo(ZoneModel, { foreignKey: 'zoneId' });
 
+// OJO: userProfile se relaciona 1:1 con indicator
 userProfileModel.hasOne(IndicatorModel, { foreignKey: 'userId' });
 IndicatorModel.belongsTo(userProfileModel, { foreignKey: 'userId' });

@@ -29,6 +29,7 @@ const validateProfileData = (
  * Controlador PUT para que el admin actualice el perfil de un usuario específico.
  * Recibe el id del usuario a actualizar en req.params.id y los datos en el body.
  *
+ * Además de la lógica existente, se agrega la actualización del campo status.
  * Si el campo campiamigo cambia a false, se elimina la zona asignada al usuario
  * (se pone zoneId en null) y se borra el indicador asociado.
  */
@@ -40,7 +41,7 @@ export const updateUserProfileByAdmin = async (req: Request, res: Response): Pro
       return;
     }
 
-    // Extraemos los datos enviados en el body
+    // Extraemos los datos enviados en el body, incluyendo el campo status
     const {
       firstName,
       lastName,
@@ -51,6 +52,7 @@ export const updateUserProfileByAdmin = async (req: Request, res: Response): Pro
       birthDate,
       gender,
       campiamigo,
+      status, // nuevo campo para actualizar el estado del usuario
     } = req.body;
 
     // Validamos los campos requeridos
@@ -98,11 +100,16 @@ export const updateUserProfileByAdmin = async (req: Request, res: Response): Pro
       // Convertir a booleano (considera que puede venir como cadena "true" o "false")
       updateData.campiamigo = campiamigo === true || campiamigo === 'true';
     }
+
     if (identificationNumber) {
       updateData.identificationNumber = identificationNumber;
     }
     if (identificationType) {
       updateData.identificationType = identificationType;
+    }
+    // Si status se envía, se agrega al objeto de actualización.
+    if (status !== undefined) {
+      updateData.status = status;
     }
 
     // Si campiamigo es false, se elimina la zona asignada (zoneId se pone en null)
@@ -118,7 +125,9 @@ export const updateUserProfileByAdmin = async (req: Request, res: Response): Pro
       await IndicatorModel.destroy({ where: { userId } });
     }
 
-    res.status(200).json({ msg: successMessagesCp.personalDataRegistered || 'Perfil actualizado correctamente.' });
+    res.status(200).json({ 
+      msg: successMessagesCp.personalDataRegistered || 'Perfil actualizado correctamente.' 
+    });
   } catch (error: any) {
     console.error('Error en updateUserProfileByAdmin:', error);
     res.status(500).json({ msg: error.message || 'Error interno del servidor.' });

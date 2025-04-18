@@ -5,6 +5,8 @@ import adminProfileUsersRouter from '../../profile-users/routes/profileUseRouter
 import adminRouter from '../../routes/adminRoute';
 import adminZoneRouter from '../../auth-users/routes/adminRegisteruser';
 import adminAuthsUsersRouter from '../../auth-users/controllers/RegisterCAmigos/utils/zone/routes/adminAuthsUsersRouter';
+import productosRouter from '../../auth-users/controllers/RegisterCAmigos/utils/producto/routes/productosRouter';
+import tagRouter from '../../auth-users/controllers/RegisterCAmigos/utils/etiqueta/routes/tagRouter';
 
 dotenv.config();
 
@@ -14,7 +16,7 @@ class AdminServer {
   constructor() {
     this.app = express();
     // Middleware global para CORS con tipos explícitos
-  
+
 
     this.middlewares(); // Otros middlewares
     this.routes();      // Definición de rutas
@@ -22,7 +24,7 @@ class AdminServer {
   }
 
   routes(): void {
-    this.app.use('/user/admin', adminRouter, adminAuthsUsersRouter, adminProfileUsersRouter, adminZoneRouter);
+    this.app.use('/user/admin', adminRouter, adminAuthsUsersRouter, adminProfileUsersRouter, adminZoneRouter, productosRouter,tagRouter);
   }
 
   middlewares(): void {

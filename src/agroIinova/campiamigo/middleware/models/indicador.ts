@@ -13,7 +13,7 @@ export interface IndicatorInterface extends Model {
   userId: number;
   updatedBy?: number;
   color: string;
-  createdAt?: Date; 
+  createdAt?: Date;
   updatedAt?: Date;
 }
 export const IndicatorModel = sequelize.define('indicator', {

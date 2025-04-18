@@ -1,54 +1,57 @@
+// src/campiamigo/controllers/indicator.controller.ts
 import { Request, Response } from 'express';
 import { AuthModel } from '../../../../../../auth/middleware/models/authModel';
 import { userProfileModel } from '../../../../../../auth/profile/middleware/models/userProfileModel';
 import { IndicatorModel } from '../../../../../../campiamigo/middleware/models/indicador';
 import { ProductModel } from '../../../../../../campiamigo/middleware/models/productModel';
 import { ZoneModel } from '../../../../../../campiamigo/middleware/models/zoneModel';
+import { TagModel } from '../../../../../../campiamigo/middleware/models/tagModel';
 
 export const getIndicatorByUserIdController = async (req: Request, res: Response): Promise<void> => {
   try {
-    // El id que se recibe debe ser el userProfile.id
-    const { id } = req.params;
+    const { id } = req.params;  // id es userProfile.id
 
     const indicator = await IndicatorModel.findOne({
-      where: { userId: id },  // userId de 'indicator' es el userProfile.id
-      attributes: ['id', 'zoneId', 'userId', 'updatedBy', 'color', 'x', 'y', 'z', 'createdAt', 'updatedAt'],
+      where: { userId: id },
+      attributes: [
+        'id','zoneId','userId','updatedBy','color',
+        'x','y','z','createdAt','updatedAt'
+      ],
       include: [
-        {
+        // 1. Zona
+        { 
           model: ZoneModel,
-          attributes: ['id', 'name', 'tipoZona', 'zoneImage'] 
+          attributes: ['id','name','tipoZona','zoneImage']
         },
+        // 2. Perfil de usuario
         {
           model: userProfileModel,
           attributes: [
-            'id',
-            'userId', // Este campo almacena el auth.id
-            'profilePicture',
-            'firstName',
-            'lastName',
-            'identificationType',
-            'identificationNumber',
-            'biography',
-            'direccion',
-            'birthDate',
-            'gender',
-            'status',
-            'campiamigo',
-            'zoneId',
-            'createdAt',
-            'updatedAt'
+            'id','userId','profilePicture','firstName','lastName',
+            'identificationType','identificationNumber','biography',
+            'direccion','birthDate','gender','status','campiamigo',
+            'zoneId','createdAt','updatedAt'
           ],
           include: [
+            // 2.1 Datos de autenticación
             {
               model: AuthModel,
-              attributes: ['id', 'email', 'phoneNumber'],
+              as: 'auth',                   // Alias para que JSON venga en userProfile.auth
+              attributes: ['id','username','email','phoneNumber'],
               include: [
                 {
                   model: ProductModel,
-                  as: 'products', // Alias definido en la relación
-                  attributes: ['id', 'name', 'description', 'price', 'image', 'glbFile', 'video']
+                  as: 'products',           // Alias definido en la relación
+                  attributes: ['id','name','description','price','image','glbFile','video']
                 }
               ]
+            },
+            // 2.2 Etiquetas
+            {
+              model: TagModel,
+              as: 'tags',                   // Alias definido en userProfileModel.hasMany()
+              attributes: ['id','name','color','createdAt','updatedAt'],
+              required: false               // Si no hay etiquetas, igual devuelve el perfil
             }
           ]
         }
@@ -63,6 +66,9 @@ export const getIndicatorByUserIdController = async (req: Request, res: Response
     res.status(200).json({ msg: 'Indicador recuperado correctamente.', indicator });
   } catch (error: any) {
     console.error('Error al recuperar el indicador:', error);
-    res.status(500).json({ msg: 'Error del servidor al obtener el indicador.', error: error.message });
+    res.status(500).json({ 
+      msg: 'Error del servidor al obtener el indicador.', 
+      error: error.message 
+    });
   }
 };

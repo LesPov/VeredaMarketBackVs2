@@ -7,6 +7,7 @@ import { ZoneModel } from '../models/zoneModel';
 import { IndicatorModel } from '../models/indicador';
 import { ProductModel } from '../models/productModel';
 import productosRouter from '../../../admin/auth-users/controllers/RegisterCAmigos/utils/producto/routes/productosRouter';
+import { TagModel } from '../models/tagModel';
 
 
 dotenv.config();
@@ -22,7 +23,7 @@ class CampiAmigoService {
     }
 
     routes() {
-        this.app.use('/campiamigo', campiAmigoRouter, productosRouter);
+        this.app.use('/campiamigo', campiAmigoRouter);
     }
 
     middlewares() {
@@ -37,6 +38,7 @@ class CampiAmigoService {
             await ZoneModel.sync();
             await IndicatorModel.sync();
             await ProductModel.sync();
+            await TagModel.sync();
 
             console.log('Modelos  sincronizados correctamente.');
         } catch (error) {

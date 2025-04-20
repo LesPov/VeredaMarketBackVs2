@@ -1,83 +1,54 @@
+// src/agroIinova/admin/auth-users/controllers/RegisterCAmigos/utils/producto/postProductController.ts
+
 import { Request, Response } from 'express';
 import uploadAssets from './uploadAssetsConfig';
 import { ProductModel } from '../../../../../../campiamigo/middleware/models/productModel';
 
 export const createProductController = async (req: Request, res: Response): Promise<void> => {
-  // Procesa la subida de archivos
-  uploadAssets(req, res, async (err: any) => {
+  uploadAssets(req, res, async err => {
     if (err) {
-      console.error("Error en la subida de activos:", err.message);
-      res.status(400).json({
-        msg: `Error en la subida de activos: ${err.message}`,
-        errors: 'Error al cargar los archivos'
-      });
-      return;
+      return res.status(400).json({ msg: `Error en la subida de activos: ${err.message}` });
     }
-
     try {
-      // Extraer los archivos enviados; se esperan tres grupos: 'imagenes', 'videos' y 'modelos'
-      const files = req.files as { [fieldname: string]: Express.Multer.File[] };
-      const imagenes = files?.imagenes ? files.imagenes.map(file => file.filename) : [];
-      const videos = files?.videos ? files.videos.map(file => file.filename) : [];
-      const modelos = files?.modelos ? files.modelos.map(file => file.filename) : [];
+      const files = req.files as Record<string, Express.Multer.File[]>;
+      const imagenes = files.imagenes?.map(f => f.filename) || [];
+      const videos   = files.videos?.map(f => f.filename)   || [];
+      const modelos  = files.modelos?.map(f => f.filename)  || [];
 
-      // Extraer los datos del producto del body
-      const { name, description, price } = req.body;
-      if (!name || !price) {
-        res.status(400).json({
-          msg: 'Los campos "name" y "price" son obligatorios.'
-        });
-        return;
+      const { name, subtitle, description, price, stock } = req.body;
+      if (!name || price == null) {
+        return res.status(400).json({ msg: 'Los campos "name" y "price" son obligatorios.' });
+      }
+      if (subtitle && subtitle.length > 255) {
+        return res.status(400).json({ msg: 'El "subtitle" no puede superar 255 caracteres.' });
       }
 
-      // Recuperamos el userId desde los parámetros de la ruta
-      const userId = parseInt(req.params.id);
-      if (!userId) {
-        res.status(400).json({
-          msg: 'El parámetro "id" del usuario es obligatorio y debe ser numérico.'
-        });
-        return;
+      const userId = Number(req.params.id);
+      if (isNaN(userId)) {
+        return res.status(400).json({ msg: 'El parámetro "id" debe ser numérico.' });
       }
 
-      // Seleccionar el primer archivo subido para cada tipo (si existen)
-      const image = imagenes.length > 0 ? imagenes[0] : null;
-      const video = videos.length > 0 ? videos[0] : null;
-      const glbFile = modelos.length > 0 ? modelos[0] : null;
-
-      // Crear el producto en la base de datos
       const newProduct = await ProductModel.create({
         name,
-        description,
-        price,
-        image,     // Guarda la primera imagen del arreglo
-        video,     // Guarda el primer video del arreglo
-        glbFile,   // Guarda el primer archivo 3D del arreglo
-        userId
+        subtitle: subtitle || null,
+        description: description || null,
+        price: parseFloat(price),    // se almacena como string "1000.00" en DB
+        image:   imagenes[0] || null,
+        video:   videos[0]   || null,
+        glbFile: modelos[0]  || null,
+        userId,
+        stock:   stock != null ? parseInt(stock, 10) : 0,
+        rating:  0
       });
 
+      // Al devolver newProduct, su price ya sale como number (1000)
       res.status(201).json({
         msg: 'Producto creado correctamente.',
-        product: newProduct,
+        product: newProduct
       });
     } catch (error: any) {
       console.error("Error en createProductController:", error);
-
-      // Lógica para personalizar el mensaje del error
-      let errorMsg = 'Error al crear el producto.';
-      
-      // Si es un error de precio fuera de rango:
-      if (error.parent && error.parent.sqlMessage && error.parent.sqlMessage.includes("Out of range value for column 'price'")) {
-        errorMsg = 'El valor ingresado para el precio es demasiado alto. Verifica que no exceda el límite permitido.';
-      }
-      // Si es un error de restricción única (producto duplicado para el mismo usuario):
-      else if (error.name === 'SequelizeUniqueConstraintError') {
-        errorMsg = 'El producto ya existe para este usuario. Por favor, utiliza otro nombre.';
-      }
-
-      res.status(500).json({
-        msg: errorMsg,
-        error: error.message
-      });
+      res.status(500).json({ msg: 'Error al crear el producto.', error: error.message });
     }
   });
 };

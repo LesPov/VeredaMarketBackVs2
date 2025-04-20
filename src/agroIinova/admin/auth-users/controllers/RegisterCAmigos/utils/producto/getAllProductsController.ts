@@ -1,17 +1,19 @@
 // controllers/getAllProductsController.ts
 import { Request, Response } from 'express';
 import { ProductModel } from '../../../../../../campiamigo/middleware/models/productModel';
-import { AuthModel } from '../../../../../../auth/middleware/models/authModel';
+import { AuthModel }     from '../../../../../../auth/middleware/models/authModel';
 import { userProfileModel } from '../../../../../../auth/profile/middleware/models/userProfileModel';
+import { TagModel }      from '../../../../../../campiamigo/middleware/models/tagModel';
+import { ZoneModel } from '../../../../../../campiamigo/middleware/models/zoneModel';
 
 export const getAllProductsController = async (req: Request, res: Response): Promise<void> => {
   try {
-    // Traer todos los productos con información del usuario (auth) y perfil (userProfile)
     const allProducts = await ProductModel.findAll({
       include: [
         {
           model: AuthModel,
-          attributes: ['id', 'username', 'email','phoneNumber', 'rol', 'status'],
+          // quitamos password y username
+          attributes: ['id', 'email', 'phoneNumber', 'rol', 'status'],
           include: [
             {
               model: userProfileModel,
@@ -29,6 +31,25 @@ export const getAllProductsController = async (req: Request, res: Response): Pro
                 'campiamigo',
                 'status',
                 'zoneId'
+              ],
+              include: [
+                {
+                  model: ZoneModel,
+                  attributes: [
+                    'id',
+                    'name',
+                    'departamentoName',
+                    'tipoZona',
+                    'climate',
+                    'cityImage',
+                    'zoneImage'
+                  ]
+                },
+                {
+                  model: TagModel,
+                  as: 'tags',
+                  attributes: ['id', 'name', 'color']
+                }
               ]
             }
           ]
@@ -38,8 +59,8 @@ export const getAllProductsController = async (req: Request, res: Response): Pro
 
     res.status(200).json({
       msg: `Se han obtenido ${allProducts.length} producto(s) en total.`,
-      products: allProducts,
-      count: allProducts.length
+      count: allProducts.length,
+      products: allProducts
     });
   } catch (error: any) {
     console.error("Error en getAllProductsController:", error);

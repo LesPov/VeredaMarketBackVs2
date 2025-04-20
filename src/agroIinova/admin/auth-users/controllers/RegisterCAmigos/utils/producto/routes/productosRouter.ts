@@ -5,6 +5,7 @@ import validateRole from '../../../../../../../auth/middleware/validateRole/vali
 import { createProductController } from '../postProductController';
 import { getUserProductsController } from '../getProductCountController';
 import { getAllProductsController } from '../getAllProductsController';
+import { getProductByIdController } from '../getProductByIdController';
 
 const productosRouter = Router();
 
@@ -13,6 +14,9 @@ const productosRouter = Router();
 productosRouter.post('/product/:id', validateToken, validateRole('admin'), createProductController);
 productosRouter.get('/product/:id/count', validateToken, validateRole('admin'), getUserProductsController);
 // Cambiar de '/products/all' a 'products/all' (montado bajo /campiamigo/product)
-productosRouter.get('/products/all', validateToken, validateRole('admin'), getAllProductsController);
+productosRouter.get('/products/all', getAllProductsController);
+// NUEVA RUTA
+// GET   /product/detail/:id      -> getProductByIdController
+productosRouter.get('/product/detail/:id', getProductByIdController);
 
 export default productosRouter;

@@ -1,32 +1,27 @@
-// models/productModel.ts
+// src/campiamigo/middleware/models/productModel.ts
+
 import { DataTypes, Model } from 'sequelize';
 import sequelize from '../../../../database/connection';
 import { AuthModel } from '../../../auth/middleware/models/authModel';
 
-/**
- * Interfaz para el Producto.
- * Define las propiedades que tendrá cada registro de producto asociado a un campesino/campiamigo.
- */
 export interface ProductInterface extends Model {
   id?: number;
-  /** Nombre del producto (único para cada usuario/campesino) */
   name: string;
-  /** Descripción del producto */
-  description?: string;
-  /** Precio del producto */
+  subtitle?: string | null;    // ← nuevo campo
+  description?: string | null;
   price: number;
-  /** URL o ruta de la imagen del producto */
-  image?: string;
-  /** Ruta o URL del archivo .glb asociado al modelo 3D del producto */
-  glbFile?: string;
-  /** URL o ruta del video del producto (opcional) */
-  video?: string;
-  /** Identificador del usuario (campesino/campiamigo) dueño del producto */
+  image?: string | null;
+  glbFile?: string | null;
+  video?: string | null;
   userId: number;
+  stock: number;
+  rating: number;
+  reviewCount: number;
 }
 
-
-export const ProductModel = sequelize.define('product', {
+export const ProductModel = sequelize.define<ProductInterface>(
+  'product',
+  {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
@@ -36,6 +31,15 @@ export const ProductModel = sequelize.define('product', {
       type: DataTypes.STRING,
       allowNull: false,
     },
+    // Nuevo campo subtitle: texto breve opcional
+    subtitle: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      comment: 'Subtítulo o lema breve del producto',
+      validate: {
+        len: [0, 255],   // opcional, hasta 255 caracteres
+      },
+    },
     description: {
       type: DataTypes.TEXT,
       allowNull: true,
@@ -44,6 +48,14 @@ export const ProductModel = sequelize.define('product', {
       type: DataTypes.DECIMAL(10, 2),
       allowNull: false,
       defaultValue: 0.0,
+      // Getter que parsea y elimina ceros innecesarios
+      get() {
+        const raw = this.getDataValue('price'); 
+        // raw viene como string "1000.00"
+        return raw === null
+          ? null
+          : parseFloat(raw as unknown as string);
+      }
     },
     image: {
       type: DataTypes.STRING,
@@ -57,16 +69,29 @@ export const ProductModel = sequelize.define('product', {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    // OJO: aquí userId apunta a la tabla auth
     userId: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      references: {
-        model: 'auth',
-        key: 'id',
-      },
+      references: { model: 'auth', key: 'id' },
     },
-  }, {
+    stock: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 0,
+    },
+    rating: {
+      type: DataTypes.FLOAT,
+      allowNull: false,
+      defaultValue: 0,
+      validate: { min: 0, max: 5 }
+    },
+    reviewCount: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 0,
+    }
+  },
+  {
     tableName: 'product',
     timestamps: true,
     indexes: [
@@ -75,8 +100,8 @@ export const ProductModel = sequelize.define('product', {
         fields: ['userId', 'name'],
       },
     ],
-  });
-  
-  // Relación 1:N con Auth
-  AuthModel.hasMany(ProductModel, { foreignKey: 'userId', as: 'products' });
-  ProductModel.belongsTo(AuthModel, { foreignKey: 'userId' });
+  }
+);
+ 
+AuthModel.hasMany(ProductModel, { foreignKey: 'userId', as: 'products' });
+ProductModel.belongsTo(AuthModel, { foreignKey: 'userId' });

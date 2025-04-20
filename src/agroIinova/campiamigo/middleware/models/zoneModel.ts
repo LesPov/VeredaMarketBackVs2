@@ -79,7 +79,7 @@ export const ZoneModel = sequelize.define<ZoneInterface>('zone', {
   titleGlb: {
     type: DataTypes.STRING,
     allowNull: true,
-    comment: 'Ruta o URL del archivo .glb para el título u otro asset 3D'
+    comment: 'Ruta o URL del archivo .glb para el título u otro asset 3D' 
   }
 }, {
   tableName: 'zone',

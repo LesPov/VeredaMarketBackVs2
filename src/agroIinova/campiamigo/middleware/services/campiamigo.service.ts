@@ -8,6 +8,7 @@ import { IndicatorModel } from '../models/indicador';
 import { ProductModel } from '../models/productModel';
 import productosRouter from '../../../admin/auth-users/controllers/RegisterCAmigos/utils/producto/routes/productosRouter';
 import { TagModel } from '../models/tagModel';
+import { ReviewModel } from '../models/reviewModel';
 
 
 dotenv.config();
@@ -39,6 +40,7 @@ class CampiAmigoService {
             await IndicatorModel.sync();
             await ProductModel.sync();
             await TagModel.sync();
+            await ReviewModel.sync();
 
             console.log('Modelos  sincronizados correctamente.');
         } catch (error) {

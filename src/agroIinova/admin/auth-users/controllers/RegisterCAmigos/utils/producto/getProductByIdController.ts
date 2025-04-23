@@ -46,7 +46,9 @@ export const getProductByIdController = async (req: Request, res: Response): Pro
                     'tipoZona',
                     'climate',
                     'cityImage',
-                    'zoneImage'
+                    'zoneImage',
+                    'modelPath', // Ruta al modelo 3D del terreno
+                    'titleGlb'   // Ruta al modelo 3D del título
                   ]
                 },
                 {

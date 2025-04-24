@@ -29,6 +29,7 @@ export const getAllZonesController = async (req: Request, res: Response): Promis
         'name',
         'description',
         'climate',
+        'cityImage',
         'departamentoName',
         'tipoZona',
         'zoneImage',

@@ -16,7 +16,7 @@ const adminZoneRouter = Router();
 adminZoneRouter.post('/zones', validateToken, validateRole('admin'), createZoneController);
 
 // Rutas adicionales de zona (consulta, actualización, eliminación)
-adminZoneRouter.get('/zone', validateToken, validateRole(['user', 'supervisor', 'admin']), getAllZonesController);
+adminZoneRouter.get('/zone',  getAllZonesController);
 
 adminZoneRouter.get('/zone/:id', validateToken, validateRole(['user', 'supervisor', 'admin']), getZoneByIdController);
 

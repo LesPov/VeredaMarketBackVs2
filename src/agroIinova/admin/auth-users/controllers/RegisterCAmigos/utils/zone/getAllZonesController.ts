@@ -35,7 +35,10 @@ export const getAllZonesController = async (req: Request, res: Response): Promis
         'zoneImage',
         'video',      // video de la zona
         'modelPath',  // modelo de la zona (puedes usar otro nombre si en tu BD es distinto)
-        'titleGlb'    // opcional: título o modelo adicional
+        'titleGlb' ,   // opcional: título o modelo adicional
+        'elevation' ,
+        'temperature', 
+        'about' 
       ],
       include: [{
         model: userProfileModel,
@@ -43,7 +46,7 @@ export const getAllZonesController = async (req: Request, res: Response): Promis
       }]
     });
 
-    // Si no existe un modelo para alguna zona (campo nulo o vacío) no se realiza acción especial.
+    // Si no existe un modelo para alguna zona (campo nulo o vacío) no se realiza acción especial. 
     // Se retorna el objeto zona completo y la lógica en el front-end podrá discriminar si la zona cuenta con modelo o video.
     res.status(200).json({
       msg: 'Zonas recuperadas correctamente.',
